@@ -1,7 +1,7 @@
 {
-    "name": "sample",
+    "name": "biolink-model",
     "version": "0.0.1",
-    "description": "",
+    "description": "A nodejs module to consume biolink model",
     "main": "built/index.js",
     "scripts": {
         "test": "jest",
@@ -21,19 +21,20 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kevinxin90/biomedical_id_resolver.js.git"
+        "url": "git+https://github.com/kevinxin90/biolink-model.js.git"
     },
     "keywords": [
-        "id",
-        "conversion",
-        "biomedical"
+        "biothings-explorer",
+        "biolink",
+        "biomedical",
+        "ontology"
     ],
     "author": "jiwen xin",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/kevinxin90/sample/issues"
+        "url": "https://github.com/kevinxin90/biolink-model.js/issues"
     },
-    "homepage": "https://github.com/kevinxin90/sample#readme",
+    "homepage": "https://github.com/kevinxin90/biolink-model.js#readme",
     "devDependencies": {
         "@types/debug": "^4.1.5",
         "@types/jest": "^26.0.20",
