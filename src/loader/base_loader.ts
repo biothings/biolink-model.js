@@ -8,7 +8,7 @@ export default abstract class Loader {
             const doc = yaml.load(input);
             return doc;
         } catch (e) {
-            throw new FileLoadingError();
+            throw new FileLoadingError("Failed to load BioLink Model. Unable to convert the yaml file into json.");
         }
     }
     abstract load(input: string | undefined): Promise<BioLinkJSON>;
