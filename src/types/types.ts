@@ -51,3 +51,7 @@ export interface BioLinkClassTreeObject {
     getDescendants(name: string): BioLinkEntityObject[];
     getAncestors(name: string): BioLinkEntityObject[];
 }
+
+export interface LoaderClass {
+    load(input: string | undefined): Promise<BioLinkJSON>;
+}
