@@ -53,5 +53,12 @@ export interface BioLinkClassTreeObject {
 }
 
 export interface LoaderClass {
-  load(input: string | undefined): Promise<BioLinkJSON>;
+  load(input: string | undefined): Promise<BioLinkJSON> | BioLinkJSON;
+}
+
+export interface BioLinkModule {
+  load(source: string | undefined): void;
+  loadSync(source: string | undefined): void;
+  classTree: BioLinkClassTreeObject;
+  biolinkJSON: BioLinkJSON;
 }
