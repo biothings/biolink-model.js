@@ -1,8 +1,8 @@
 import yaml from 'js-yaml';
 import FileLoadingError from '../exceptions/file_loading_error';
-import { BioLinkJSON } from '../types/types'
+import { BioLinkJSON, LoaderClass } from '../types/types'
 
-export default abstract class Loader {
+export default abstract class Loader implements LoaderClass {
     protected yaml2json(input: string) {
         try {
             const doc = yaml.load(input);
