@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.3](https://github.com/kevinxin90/biolink-model.js/compare/v0.0.2...v0.0.3) (2021-02-25)
+
+
+### Features
+
+* :sparkles: Enable loading default BioLink model yaml in Sync mode ([96a41c6](https://github.com/kevinxin90/biolink-model.js/commit/96a41c6c077acccf8d93ae471d428c0e7c9352e4))
+* :sparkles: Enable loading user provided biolink yaml file in Sync mode ([a6c9e2e](https://github.com/kevinxin90/biolink-model.js/commit/a6c9e2ecf97c0bb28bb2f618fa6774a38222e113))
+
 ### 0.0.2 (2021-02-25)
 
 
