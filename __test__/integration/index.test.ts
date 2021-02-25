@@ -10,6 +10,14 @@ describe("Test BioLink module", () => {
         })
     })
 
+    describe("Test loadSync function", () => {
+        test("When source is unspecified, should return default spec", () => {
+            const biolink = new BioLink();
+            biolink.loadSync();
+            expect(biolink.biolinkJSON).toHaveProperty("classes");
+        })
+    })
+
     describe("Test classTree getter method", () => {
         test("BioLink Class Tree Object is correctly retrieved", async () => {
             const biolink = new BioLink();
