@@ -96,4 +96,47 @@ describe("Test BioLink Class Tree class", () => {
         })
 
     })
+
+    describe("Test getPath function", () => {
+        let tree;
+        beforeEach(() => {
+            const file = fs.readFileSync(path.resolve(__dirname, '../../data/biolink.yaml'), { encoding: 'utf8' });
+            const jsonObj = yaml.load(file) as BioLinkJSON;
+            const objs = jsonObj.classes;
+            tree = new BioLinkClassTree(objs);
+            tree.construct();
+        })
+
+        test("Return all intermediates nodes between upstream and downstream if there're > 1 intermediates", () => {
+            const res = tree.getPath("Gene", "NamedThing").map(item => item.name);
+            expect(res).toEqual(["GenomicEntity", "MolecularEntity", "BiologicalEntity"]);
+        })
+
+        test("Return the intermediate nodes between upstream and downstream if there're only 1 intermediates", () => {
+            const res = tree.getPath("Gene", "MolecularEntity").map(item => item.name);
+            expect(res).toEqual(["GenomicEntity"]);
+        })
+
+        test("Return [] if upstream is direct parent of downstream", () => {
+            const res = tree.getPath("Gene", "GenomicEntity").map(item => item.name);
+            expect(res).toEqual([]);
+        })
+
+        test("Return [] if downstream has no parent", () => {
+            const res = tree.getPath("Entity", "GenomicEntity").map(item => item.name);
+            expect(res).toEqual([]);
+        })
+
+        test("Downstream Entity not in the tree should throw an error", () => {
+            expect(() => {
+                tree.getPath("Gene1", "Gene2");
+            }).toThrowError(new EntityNotFound("Your downstream entity Gene1 is not in the tree."))
+        })
+
+        test("Upstream Entity not in the tree should throw an error", () => {
+            expect(() => {
+                tree.getPath("Gene", "Gene2");
+            }).toThrowError(new EntityNotFound("Your upstream entity Gene2 is not in the tree."))
+        })
+    })
 })
