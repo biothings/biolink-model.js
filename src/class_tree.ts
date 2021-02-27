@@ -69,4 +69,23 @@ export default class BioLinkClassTree implements BioLinkClassTreeObject {
     ancestors = [...ancestors, ...this.getAncestors(this._entities[pascalCase(name)].parent)];
     return this.getUniqueEntities(ancestors);
   }
+
+  getPath(downstreamNode: string, upstreamNode: string): BioLinkEntityObject[] {
+    if (!(pascalCase(downstreamNode) in this._entities)) {
+      throw new EntityNotFound(`Your downstream entity ${pascalCase(downstreamNode)} is not in the tree.`);
+    }
+    if (!(pascalCase(upstreamNode) in this._entities)) {
+      throw new EntityNotFound(`Your upstream entity ${pascalCase(upstreamNode)} is not in the tree.`);
+    }
+    let path = [];
+    if (
+      typeof this._entities[pascalCase(downstreamNode)].parent === 'undefined' ||
+      this._entities[pascalCase(downstreamNode)].parent === pascalCase(upstreamNode)
+    ) {
+      return path;
+    }
+    path.push(this._entities[this._entities[pascalCase(downstreamNode)].parent]);
+    path = [...path, ...this.getPath(this._entities[pascalCase(downstreamNode)].parent, upstreamNode)];
+    return this.getUniqueEntities(path);
+  }
 }
