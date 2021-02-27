@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/kevinxin90/biolink-model.js/compare/v0.0.3...v0.1.0) (2021-02-27)
+
+
+### Features
+
+* :sparkles: add getPath feature ([f53156b](https://github.com/kevinxin90/biolink-model.js/commit/f53156bbb8b154a96aa0591ae49e2ec6ebb49f46))
+
 ### [0.0.3](https://github.com/kevinxin90/biolink-model.js/compare/v0.0.2...v0.0.3) (2021-02-25)
 
 
