@@ -50,6 +50,7 @@ export interface BioLinkClassTreeObject {
   construct(): void;
   getDescendants(name: string): BioLinkEntityObject[];
   getAncestors(name: string): BioLinkEntityObject[];
+  getPath(downstreamNode: string, upstreamNode: string): BioLinkEntityObject[];
 }
 
 export interface LoaderClass {
