@@ -1,5 +1,5 @@
 export interface BioLinkClassObject {
-  is_a: string;
+  is_a?: string;
   description?: string;
   id_prefixes?: string[];
   exact_mapping?: string[];
