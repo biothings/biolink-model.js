@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/kevinxin90/biolink-model.js/compare/v0.1.1...v0.1.2) (2021-03-01)
+
+
+### Features
+
+* :sparkles: add customized logics for handing id_prefixes ([9fd2166](https://github.com/kevinxin90/biolink-model.js/commit/9fd216682fdc3f466a3c598e80d7fc0c8fb82517))
+
 ### [0.1.1](https://github.com/kevinxin90/biolink-model.js/compare/v0.1.0...v0.1.1) (2021-02-28)
 
 ## [0.1.0](https://github.com/kevinxin90/biolink-model.js/compare/v0.0.3...v0.1.0) (2021-02-27)
