@@ -1,6 +1,6 @@
-import BioLinkClassTree from '../../src/class_tree';
-import EntityObject from '../../src/entity_object';
-import EntityNotFound from '../../src/exceptions/entity_not_found'
+import BioLinkClassTree from '../../src/tree/class_tree';
+import EntityObject from '../../src/object/entity_object';
+import NodeNotFound from '../../src/exceptions/node_not_found'
 import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
@@ -20,19 +20,19 @@ describe("Test BioLink Class Tree class", () => {
 
         test("Test all objects are corretly loaded", () => {
             tree.construct();
-            expect(tree.entities).toHaveProperty("Gene");
-            expect(tree.entities.Gene).toBeInstanceOf(EntityObject)
-            expect(tree.entities).toHaveProperty("ChemicalSubstance");
-            expect(tree.entities).toHaveProperty("OntologyClass");
-            expect(Object.keys(tree.entities)).toHaveLength(Object.keys(objs).length);
+            expect(tree.objects).toHaveProperty("Gene");
+            expect(tree.objects.Gene).toBeInstanceOf(EntityObject)
+            expect(tree.objects).toHaveProperty("ChemicalSubstance");
+            expect(tree.objects).toHaveProperty("OntologyClass");
+            expect(Object.keys(tree.objects)).toHaveLength(Object.keys(objs).length);
         })
 
         test("Test hierarchical order are correctly parsed", () => {
             tree.construct();
-            expect(tree.entities.GenomicEntity.children).toContain('Gene');
-            expect(tree.entities.MolecularEntity.children).toContain('GenomicEntity');
-            expect(tree.entities.MolecularEntity.children).not.toContain('Gene')
-            expect(tree.entities.Gene.children).toHaveLength(0);
+            expect(tree.objects.GenomicEntity.children).toContain('Gene');
+            expect(tree.objects.MolecularEntity.children).toContain('GenomicEntity');
+            expect(tree.objects.MolecularEntity.children).not.toContain('Gene')
+            expect(tree.objects.Gene.children).toHaveLength(0);
         })
     })
 
@@ -48,9 +48,9 @@ describe("Test BioLink Class Tree class", () => {
         })
 
         test("Test multi-level inheritency is correctly parsed", () => {
-            expect(tree.getDescendants("MolecularEntity")).toContain(tree.entities.Gene);
-            expect(tree.entities.NamedThing).not.toBeUndefined;
-            expect(tree.getDescendants("MolecularEntity")).not.toContain(tree.entities.NamedThing);
+            expect(tree.getDescendants("MolecularEntity")).toContain(tree.objects.Gene);
+            expect(tree.objects.NamedThing).not.toBeUndefined;
+            expect(tree.getDescendants("MolecularEntity")).not.toContain(tree.objects.NamedThing);
         })
 
         test("Entity without descendants should return empty array", () => {
@@ -61,7 +61,7 @@ describe("Test BioLink Class Tree class", () => {
         test("Entity not in the tree should throw an error", () => {
             expect(() => {
                 tree.getDescendants("Gene1");
-            }).toThrowError(new EntityNotFound("Your input entity Gene1 is not in the tree."))
+            }).toThrowError(new NodeNotFound("The node you provide Gene1 is not in the tree."))
         })
 
     })
@@ -79,9 +79,9 @@ describe("Test BioLink Class Tree class", () => {
 
         test("Test multi-level inheritency is correctly parsed", () => {
             tree.construct();
-            expect(tree.getAncestors("Gene")).toContain(tree.entities.MolecularEntity);
-            expect(tree.getAncestors("Gene")).toContain(tree.entities.NamedThing);
-            expect(tree.getAncestors("Gene")).not.toContain(tree.entities.Protein);
+            expect(tree.getAncestors("Gene")).toContain(tree.objects.MolecularEntity);
+            expect(tree.getAncestors("Gene")).toContain(tree.objects.NamedThing);
+            expect(tree.getAncestors("Gene")).not.toContain(tree.objects.Protein);
         })
 
         test("Entity without ancestors should return empty array", () => {
@@ -92,7 +92,7 @@ describe("Test BioLink Class Tree class", () => {
         test("Entity not in the tree should throw an error", () => {
             expect(() => {
                 tree.getAncestors("Gene1");
-            }).toThrowError(new EntityNotFound("Your input entity Gene1 is not in the tree."))
+            }).toThrowError(new NodeNotFound("The node you provide Gene1 is not in the tree."))
         })
 
     })
@@ -127,16 +127,16 @@ describe("Test BioLink Class Tree class", () => {
             expect(res).toEqual([]);
         })
 
-        test("Downstream Entity not in the tree should throw an error", () => {
+        test("Downstream node not in the tree should throw an error", () => {
             expect(() => {
                 tree.getPath("Gene1", "Gene2");
-            }).toThrowError(new EntityNotFound("Your downstream entity Gene1 is not in the tree."))
+            }).toThrowError(new NodeNotFound("The node you provide Gene1 is not in the tree."))
         })
 
-        test("Upstream Entity not in the tree should throw an error", () => {
+        test("Upstream node not in the tree should throw an error", () => {
             expect(() => {
                 tree.getPath("Gene", "Gene2");
-            }).toThrowError(new EntityNotFound("Your upstream entity Gene2 is not in the tree."))
+            }).toThrowError(new NodeNotFound("The node you provide Gene2 is not in the tree."))
         })
     })
 })
