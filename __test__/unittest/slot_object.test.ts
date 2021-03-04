@@ -13,6 +13,18 @@ describe("Test Slot Object", () => {
         })
     })
 
+    describe("Test description method", () => {
+        test("description property is correctly retreived if provided", () => {
+            const s = new Slot("affects_uptake_of", { description: "holds between two molecular entities where the action or effect of one impacts the rate of uptake of the other into of a cell, gland, or organ" });
+            expect(s.description).toEqual("holds between two molecular entities where the action or effect of one impacts the rate of uptake of the other into of a cell, gland, or organ");
+        })
+
+        test("description property is undefined if not provided", () => {
+            const s = new Slot("negatively_regulates", {});
+            expect(s.description).toBeUndefined;
+        })
+    })
+
     describe("Test domain method", () => {
         test("domain property is correctly retreived if provided", () => {
             const s = new Slot("regulates", { domain: "physical essence or occurrent" });
