@@ -1,27 +1,14 @@
-import { BioLinkClassObject, BioLinkEntityObject } from './types/types';
+import { BioLinkClass, BioLinkEntityObject } from '../types/types';
 import { pascalCase } from 'pascal-case';
+import BaseObject from './base_object';
 
-export default class Entity implements BioLinkEntityObject {
-  private _description: string;
-  private _parent: string;
-  private _children: string[];
+export default class Entity extends BaseObject implements BioLinkEntityObject {
   private _id_prefixes: string[];
-  private _name: string;
 
-  constructor(name: string, info: BioLinkClassObject) {
-    this._name = name;
-    this._description = info.description;
+  constructor(name: string, info: BioLinkClass) {
+    super(name, info);
     this.id_prefixes = info.id_prefixes;
     this._parent = typeof info.is_a === 'undefined' ? info.is_a : pascalCase(info.is_a);
-    this._children = [];
-  }
-
-  get parent(): string {
-    return this._parent;
-  }
-
-  get description(): string {
-    return this._description;
   }
 
   get id_prefixes(): string[] {
@@ -33,17 +20,11 @@ export default class Entity implements BioLinkEntityObject {
       this._id_prefixes = [...['SYMBOL', 'OMIM', 'UMLS'], ...idPrefixes];
     } else if (this._name === 'ChemicalSubstance') {
       this._id_prefixes = [...['UMLS'], ...idPrefixes];
+    } else if (this._name === "Disease") {
+      this._id_prefixes = [...['GARD'], ...idPrefixes];
     } else {
       this._id_prefixes = idPrefixes;
     }
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  get children(): string[] {
-    return this._children;
   }
 
   addChild(child: string): void {
