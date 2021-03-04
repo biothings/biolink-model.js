@@ -6,7 +6,7 @@ import {
   BioLinkEntitiesObject,
   BioLinkClassTreeObject,
 } from '../types/types';
-import BaseTree from './base_tree'
+import BaseTree from './base_tree';
 
 export default class BioLinkClassTree extends BaseTree implements BioLinkClassTreeObject {
   protected _objects_in_yaml: BioLinkClassesObject;
@@ -23,7 +23,7 @@ export default class BioLinkClassTree extends BaseTree implements BioLinkClassTr
 
   protected addNewObjectToTree(name: string): void {
     this._objects_in_tree[this._modify(name)] = new Entity(this._modify(name), this._objects_in_yaml[name]);
-  };
+  }
 
   getDescendants(name: string): BioLinkEntityObject[] {
     return super.getDescendants(name) as BioLinkEntityObject[];

@@ -27,7 +27,7 @@ export interface BioLinkObject {
 }
 
 export interface BioLinkObjects {
-  [propName: string]: BioLinkObject
+  [propName: string]: BioLinkObject;
 }
 
 export interface BioLinkEntityObject extends BioLinkObject {
