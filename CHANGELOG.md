@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [0.2.1](https://github.com/kevinxin90/biolink-model.js/compare/v0.2.0...v0.2.1) (2021-03-04)
 
+Update documentation
+
 ## [0.2.0](https://github.com/kevinxin90/biolink-model.js/compare/v0.1.2...v0.2.0) (2021-03-04)
 
 
