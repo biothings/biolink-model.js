@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/kevinxin90/biolink-model.js/compare/v0.1.2...v0.2.0) (2021-03-04)
+
+
+### Features
+
+* :sparkles: Add BioLink Slot tree for traversal ([c78f170](https://github.com/kevinxin90/biolink-model.js/commit/c78f170ef815b3d768033181731297500955d65f))
+
+
+### Bug Fixes
+
+* :bug: fix issue when underscore function only replace the first occurrence of space ([ef17e82](https://github.com/kevinxin90/biolink-model.js/commit/ef17e82bf1074017e1b25dd1caf66e39642da2f1))
+* :bug: remove , in predicate when processing ([9260f44](https://github.com/kevinxin90/biolink-model.js/commit/9260f444006612e25adaeea02de46f6786eaa1b1))
+
 ### [0.1.2](https://github.com/kevinxin90/biolink-model.js/compare/v0.1.1...v0.1.2) (2021-03-01)
 
 
