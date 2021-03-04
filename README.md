@@ -13,7 +13,7 @@ npm i biolink-model
 
 ## 📐 Usage
 
-### Import and Initialize
+### 🧡 Import and Initialize
 
 ```javascript
 const bl = require("biolink-model")
@@ -24,7 +24,7 @@ const biolink = new bl.BioLink();
 
 <br>
 
-### Load BioLink Yaml File
+### 💚 Load BioLink Yaml File
 
 Loading BioLink Yaml file is a required step before you can utilizing this package to traverse the hierarchy tree for BioLink predicates and classes.
 
@@ -64,13 +64,15 @@ biolink.loadSync(path.resolve(__dirname, './biolink.yaml');
 
 <br>
 
-### 🔎 Get BioLink Class Tree Object
+### 💚 Traverse the BioLink Class Hierarchy
+
+#### 🔎 Get BioLink Class Tree Object
 
 ```javascript
 const tree = biolink.classTree;
 ```
 
-### 🔎 Get the ancestors of a biolink class
+#### 🔎 Get the ancestors of a biolink class
 
 ```javascript
 
@@ -79,7 +81,7 @@ const tree = biolink.classTree;
 const ancestors = tree.getAncestors("Gene")
 ```
 
-### 🔎 Get the descendants of a biolink class
+#### 🔎 Get the descendants of a biolink class
 
 ```javascript
 
@@ -90,13 +92,15 @@ const descendants = tree.getDescendants("MolecularEntity")
 
 <br>
 
-### 🔎 Get BioLink Slot Tree Object
+### 💚 Traverse the BioLink Slot Hierarchy
+
+#### 🔎 Get BioLink Slot Tree Object
 
 ```javascript
 const tree = biolink.slotTree;
 ```
 
-### 🔎 Get the ancestors of a biolink slot
+#### 🔎 Get the ancestors of a biolink slot
 
 ```javascript
 
@@ -105,7 +109,7 @@ const tree = biolink.slotTree;
 const ancestors = tree.getAncestors("regulates")
 ```
 
-### 🔎 Get the descendants of a biolink slot
+#### 🔎 Get the descendants of a biolink slot
 
 ```javascript
 
