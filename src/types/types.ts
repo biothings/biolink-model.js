@@ -37,6 +37,7 @@ export interface BioLinkEntityObject extends BioLinkObject {
 export interface BioLinkSlotObject extends BioLinkObject {
   domain: string;
   range: string;
+  inverse: string;
   exact_mapping: string[];
   close_mapping: string[];
   narrow_mapping: string[];
@@ -53,6 +54,7 @@ export interface BioLinkSlotsObject {
 export interface BioLinkSlot extends BioLinkBase {
   domain?: string;
   range?: string;
+  inverse?: string;
   exact_mapping?: string[];
   close_mapping?: string[];
   narrow_mapping?: string[];
