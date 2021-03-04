@@ -24,7 +24,7 @@ const biolink = new bl.BioLink();
 
 <br>
 
-### 📢 Load BioLink Yaml File
+### ❗ Load BioLink Yaml File
 
 Loading BioLink Yaml file is a required step before you can utilizing this package to traverse the hierarchy tree for BioLink predicates and classes.
 
@@ -64,7 +64,7 @@ biolink.loadSync(path.resolve(__dirname, './biolink.yaml');
 
 <br>
 
-### 📢 Traverse the BioLink Class Hierarchy
+### ❇️ Traverse the BioLink Class Hierarchy
 
 #### 🔎 Get BioLink Class Tree Object
 
@@ -92,7 +92,7 @@ const descendants = tree.getDescendants("MolecularEntity")
 
 <br>
 
-### 📢 Traverse the BioLink Slot Hierarchy
+### ❇️ Traverse the BioLink Slot Hierarchy
 
 #### 🔎 Get BioLink Slot Tree Object
 
