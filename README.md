@@ -22,6 +22,8 @@ const biolink = new bl.BioLink();
 
 ```
 
+<br>
+
 ### Load BioLink Yaml File
 
 Loading BioLink Yaml file is a required step before you can utilizing this package to traverse the hierarchy tree for BioLink predicates and classes.
@@ -55,10 +57,12 @@ This can be done in sync or async mode as well.
 import path from 'path';
 // load in async mode
 // assume your biolink file is stored in the same folder under biolink.yaml
-await biolink.load(path.resolve(__dirname, './data/biolink.yaml');
+await biolink.load(path.resolve(__dirname, './biolink.yaml');
 // in sync mode
-biolink.loadSync(path.resolve(__dirname, './data/biolink.yaml');
+biolink.loadSync(path.resolve(__dirname, './biolink.yaml');
 ```
+
+<br>
 
 ### 🔎 Get BioLink Class Tree Object
 
@@ -83,6 +87,8 @@ const tree = biolink.classTree;
 
 const descendants = tree.getDescendants("MolecularEntity")
 ```
+
+<br>
 
 ### 🔎 Get BioLink Slot Tree Object
 
