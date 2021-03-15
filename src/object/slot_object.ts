@@ -10,6 +10,7 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
   private _exact_mapping: string[];
   private _close_mapping: string[];
   private _narrow_mapping: string[];
+  private _symmetric: boolean;
 
   constructor(name: string, info: BioLinkSlot) {
     super(name, info);
@@ -17,6 +18,7 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
     this._inverse = typeof info.inverse === 'undefined' ? info.inverse : underscore(info.inverse);
     this._domain = typeof info.domain === 'undefined' ? undefined : pascalCase(info.domain);
     this._range = typeof info.range === 'undefined' ? undefined : pascalCase(info.range);
+    this._symmetric = typeof info.symmetric === 'undefined' ? false : true;
     this._exact_mapping = info.exact_mapping;
     this._close_mapping = info.close_mapping;
     this._narrow_mapping = info.narrow_mapping;
@@ -24,6 +26,10 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
 
   get inverse(): string {
     return this._inverse;
+  }
+
+  get symmetric(): boolean {
+    return this._symmetric;
   }
 
   get domain(): string {
