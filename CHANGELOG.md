@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/kevinxin90/biolink-model.js/compare/v0.3.0...v0.3.1) (2021-04-27)
+
+
+### Bug Fixes
+
+* :bug: change NCBIGENE to NCBIGene ([ae5dc2e](https://github.com/kevinxin90/biolink-model.js/commit/ae5dc2ef2517486da0cb9845e5b6bbaea4058e5a))
+
 ## [0.3.0](https://github.com/kevinxin90/biolink-model.js/compare/v0.2.1...v0.3.0) (2021-03-15)
 
 
