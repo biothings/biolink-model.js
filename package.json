@@ -21,7 +21,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/kevinxin90/biolink-model.js.git"
+        "url": "git+https://github.com/biothings/biolink-model.js.git"
     },
     "keywords": [
         "biothings-explorer",
@@ -32,9 +32,9 @@
     "author": "jiwen xin",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/kevinxin90/biolink-model.js/issues"
+        "url": "https://github.com/biothings/biolink-model.js/issues"
     },
-    "homepage": "https://github.com/kevinxin90/biolink-model.js#readme",
+    "homepage": "https://github.com/biothings/biolink-model.js#readme",
     "devDependencies": {
         "@types/axios": "^0.14.0",
         "@types/debug": "^4.1.5",
