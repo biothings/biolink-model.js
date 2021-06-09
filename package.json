@@ -1,61 +1,61 @@
 {
-    "name": "biolink-model",
-    "version": "0.3.1",
-    "description": "A nodejs module to consume biolink model",
-    "main": "built/index.js",
-    "scripts": {
-        "test": "jest",
-        "test-cov": "jest --coverage",
-        "build": "tsc",
-        "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-        "format": "prettier --write \"src/**/*.ts\" \"built/**/*.js\"",
-        "lint": "tslint -p tsconfig.json",
-        "prepare": "npm run build",
-        "prepublishOnly": "npm test",
-        "version": "npm run format && git add -A src",
-        "postversion": "git push && git push --tags",
-        "release": "npm run format && standard-version",
-        "release:minor": "npm run format && standard-version --release-as minor",
-        "release:patch": "npm run format && standard-version --release-as patch",
-        "release:major": "npm run format && standard-version --release-as major"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/biothings/biolink-model.js.git"
-    },
-    "keywords": [
-        "biothings-explorer",
-        "biolink",
-        "biomedical",
-        "ontology"
-    ],
-    "author": "jiwen xin",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/biothings/biolink-model.js/issues"
-    },
-    "homepage": "https://github.com/biothings/biolink-model.js#readme",
-    "devDependencies": {
-        "@types/axios": "^0.14.0",
-        "@types/debug": "^4.1.5",
-        "@types/jest": "^26.0.20",
-        "@types/js-yaml": "^4.0.0",
-        "@types/node": "^14.14.22",
-        "@types/pascal-case": "^1.1.2",
-        "coveralls": "^3.0.9",
-        "jest": "^26.6.3",
-        "prettier": "^2.2.1",
-        "standard-version": "^9.1.0",
-        "ts-jest": "^26.4.4",
-        "tslint": "^6.1.3",
-        "tslint-config-prettier": "^1.18.0",
-        "typedoc": "^0.20.19",
-        "typescript": "^4.1.3"
-    },
-    "dependencies": {
-        "axios": "^0.21.1",
-        "debug": "^4.3.1",
-        "js-yaml": "^4.0.0",
-        "pascal-case": "^3.1.2"
-    }
+  "name": "biolink-model",
+  "version": "0.3.1",
+  "description": "A nodejs module to consume biolink model",
+  "main": "built/index.js",
+  "scripts": {
+    "test": "jest",
+    "test-cov": "jest --coverage",
+    "build": "tsc",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "format": "prettier --write \"src/**/*.ts\" \"built/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "release": "npm run format && standard-version",
+    "release:minor": "npm run format && standard-version --release-as minor",
+    "release:patch": "npm run format && standard-version --release-as patch",
+    "release:major": "npm run format && standard-version --release-as major"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/biothings/biolink-model.js.git"
+  },
+  "keywords": [
+    "biothings-explorer",
+    "biolink",
+    "biomedical",
+    "ontology"
+  ],
+  "author": "jiwen xin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/biothings/biolink-model.js/issues"
+  },
+  "homepage": "https://github.com/biothings/biolink-model.js#readme",
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/debug": "^4.1.5",
+    "@types/jest": "^26.0.20",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^14.14.22",
+    "@types/pascal-case": "^1.1.2",
+    "coveralls": "^3.0.9",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "standard-version": "^9.1.0",
+    "ts-jest": "^26.4.4",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typedoc": "^0.20.19",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "debug": "^4.3.1",
+    "js-yaml": "^4.0.0",
+    "pascal-case": "^3.1.2"
+  }
 }
