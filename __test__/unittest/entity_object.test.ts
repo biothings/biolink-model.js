@@ -19,6 +19,14 @@ describe("Test EntityObject class", () => {
         expect(entity.id_prefixes).toContain("UMLS");
     })
 
+    test("If input entity is SmallMolecule, should add additonal ID prefixes in addtion to provided ones", () => {
+        const entity = new Entity("SmallMolecule", {
+            "id_prefixes": ["CHEMBL.COMPOUND"]
+        })
+        // expect(entity.id_prefixes).toContain("CHEMBL.COMPOUND");
+        expect(entity.id_prefixes).toContain("UMLS");
+    })
+
     test("If input entity is Disease, should add additonal ID prefixes in addition to provided ones", () => {
         const entity = new Entity("Disease", {
             "id_prefixes": ["KEGG"]
