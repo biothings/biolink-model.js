@@ -18,6 +18,8 @@ export default class Entity extends BaseObject implements BioLinkEntityObject {
   set id_prefixes(idPrefixes: string[]) {
     if (this._name === 'Gene') {
       this._id_prefixes = [...['SYMBOL', 'OMIM', 'UMLS'], ...idPrefixes];
+    } else if (this._name === 'ChemicalSubstance') {
+      this._id_prefixes = typeof idPrefixes === 'undefined' ? ['UMLS'] : [...['UMLS'], ...idPrefixes];
     } else if (this._name === 'SmallMolecule') {
       this._id_prefixes = [...['UMLS'], ...idPrefixes];
     } else if (this._name === 'Disease') {
