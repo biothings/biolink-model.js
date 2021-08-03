@@ -29,8 +29,7 @@ describe("Test BioLink Class Tree class", () => {
 
         test("Test hierarchical order are correctly parsed", () => {
             tree.construct();
-            expect(tree.objects.GenomicEntity.children).toContain('Gene');
-            expect(tree.objects.MolecularEntity.children).toContain('GenomicEntity');
+            expect(tree.objects.MolecularEntity.children).toEqual(["SmallMolecule", "NucleicAcidEntity"]);
             expect(tree.objects.MolecularEntity.children).not.toContain('Gene')
             expect(tree.objects.Gene.children).toHaveLength(0);
         })
@@ -48,7 +47,20 @@ describe("Test BioLink Class Tree class", () => {
         })
 
         test("Test multi-level inheritency is correctly parsed", () => {
-            expect(tree.getDescendants("MolecularEntity")).toContain(tree.objects.Gene);
+            expect(tree.getDescendants("MolecularEntity")).toEqual(
+                [
+                    tree.objects.SmallMolecule,
+                    tree.objects.NucleicAcidEntity,
+                    tree.objects.Exon,
+                    tree.objects.Transcript,
+                    tree.objects.RnaProduct,
+                    tree.objects.RnaProductIsoform,
+                    tree.objects.NoncodingRnaProduct,
+                    tree.objects.MicroRna,
+                    tree.objects.SiRna,
+                    tree.objects.CodingSequence
+                ]
+            );
             expect(tree.objects.NamedThing).not.toBeUndefined;
             expect(tree.getDescendants("MolecularEntity")).not.toContain(tree.objects.NamedThing);
         })
@@ -79,7 +91,13 @@ describe("Test BioLink Class Tree class", () => {
 
         test("Test multi-level inheritency is correctly parsed", () => {
             tree.construct();
-            expect(tree.getAncestors("Gene")).toContain(tree.objects.MolecularEntity);
+            expect(tree.getAncestors("Gene")).toEqual(
+                [
+                    tree.objects.BiologicalEntity,
+                    tree.objects.NamedThing,
+                    tree.objects.Entity
+                ]
+            );
             expect(tree.getAncestors("Gene")).toContain(tree.objects.NamedThing);
             expect(tree.getAncestors("Gene")).not.toContain(tree.objects.Protein);
         })
@@ -109,17 +127,17 @@ describe("Test BioLink Class Tree class", () => {
 
         test("Return all intermediates nodes between upstream and downstream if there're > 1 intermediates", () => {
             const res = tree.getPath("Gene", "NamedThing").map(item => item.name);
-            expect(res).toEqual(["GenomicEntity", "MolecularEntity", "BiologicalEntity"]);
+            expect(res).toEqual(["BiologicalEntity"]);
         })
 
         test("Return the intermediate nodes between upstream and downstream if there're only 1 intermediates", () => {
             const res = tree.getPath("Gene", "MolecularEntity").map(item => item.name);
-            expect(res).toEqual(["GenomicEntity"]);
+            expect(res).toEqual(["BiologicalEntity", "NamedThing", "Entity"]);
         })
 
         test("Return [] if upstream is direct parent of downstream", () => {
             const res = tree.getPath("Gene", "GenomicEntity").map(item => item.name);
-            expect(res).toEqual([]);
+            expect(res).toEqual(["BiologicalEntity", "NamedThing", "Entity"]);
         })
 
         test("Return [] if downstream has no parent", () => {
