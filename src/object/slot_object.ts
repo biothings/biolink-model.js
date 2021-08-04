@@ -28,6 +28,10 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
     return this._inverse;
   }
 
+  set inverse(value: string) {
+    this._inverse = value;
+  }
+
   get symmetric(): boolean {
     return this._symmetric;
   }
