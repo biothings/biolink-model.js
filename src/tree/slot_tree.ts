@@ -20,6 +20,11 @@ export default class BioLinkClassTree extends BaseTree implements BioLinkSlotTre
     this._objects_in_tree[this._modify(name)] = new Slot(this._modify(name), this._objects_in_yaml[name]);
   }
 
+  construct() {
+    super.construct();
+    Object.keys(this._objects_in_tree).map((name: string) => this.inferInverseRelationship(name));
+  }
+
   getDescendants(name: string): BioLinkSlotObject[] {
     return super.getDescendants(name) as BioLinkSlotObject[];
   }
@@ -30,5 +35,16 @@ export default class BioLinkClassTree extends BaseTree implements BioLinkSlotTre
 
   getPath(downstreamNode: string, upstreamNode: string): BioLinkSlotObject[] {
     return super.getPath(downstreamNode, upstreamNode) as BioLinkSlotObject[];
+  }
+
+  protected inferInverseRelationship(name) {
+    if (typeof this._objects_in_tree[this._modify(name)].inverse === 'undefined') {
+      const inverse = Object.values(this._objects_in_tree).find(
+        (obj: BioLinkSlotObject) => obj.inverse === this._modify(name),
+      );
+      if (typeof inverse !== 'undefined') {
+        this._objects_in_tree[this._modify(name)].inverse = inverse.name;
+      }
+    }
   }
 }
