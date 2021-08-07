@@ -22,7 +22,7 @@ describe("Test BioLink Class Tree class", () => {
             tree.construct();
             expect(tree.objects).toHaveProperty("Gene");
             expect(tree.objects.Gene).toBeInstanceOf(EntityObject)
-            expect(tree.objects).toHaveProperty("ChemicalSubstance");
+            expect(tree.objects).toHaveProperty("SmallMolecule");
             expect(tree.objects).toHaveProperty("OntologyClass");
             expect(Object.keys(tree.objects)).toHaveLength(Object.keys(objs).length);
         })
