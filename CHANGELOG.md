@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/biothings/biolink-model.js/compare/v0.3.1...v0.4.0) (2021-08-16)
+
+
+### Bug Fixes
+
+* allow setting inverse ([399f59d](https://github.com/biothings/biolink-model.js/commit/399f59daed11372f2daf5a51c162c3d24fab1447))
+* ChemicalSubstance -> SmallMolecule ([42f0e4c](https://github.com/biothings/biolink-model.js/commit/42f0e4ce76267e7c8e1c95161804adbf176cc7cd))
+* infer missing inverses ([ca2f9d0](https://github.com/biothings/biolink-model.js/commit/ca2f9d03c1659c937953b6d920a3180b1d34f617))
+* update biolink.yaml to 2.1.0 ([89c3dd4](https://github.com/biothings/biolink-model.js/commit/89c3dd42850eeefdcfd8bf4c9abed479ecba35b3))
+
 ### [0.3.1](https://github.com/kevinxin90/biolink-model.js/compare/v0.3.0...v0.3.1) (2021-04-27)
 
 
