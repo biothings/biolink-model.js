@@ -7,7 +7,12 @@ import { BioLinkJSON } from '../types/types';
 
 export default class DefaultLoader extends Loader {
   async load() {
-    const file = await readFile(path.resolve(__dirname, '../../data/biolink.yaml'), { encoding: 'utf8' });
-    return this.yaml2json(file) as BioLinkJSON;
+    const biolink_path = process.env.BIOLINK_FILE
+      ? path.resolve(process.env.BIOLINK_FILE)
+      : path.resolve(__dirname, '../../data/biolink.yaml');
+    const file = await readFile(biolink_path, { encoding: 'utf8' });
+    return (
+      ['.yaml', '.yml'].includes(path.extname(biolink_path)) ? this.yaml2json(file) : JSON.parse(file)
+    ) as BioLinkJSON;
   }
 }
