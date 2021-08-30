@@ -39,7 +39,7 @@ describe("Test BioLink Slot Tree class", () => {
             tree.construct();
             expect(tree.objects.gene_associated_with_condition.inverse).toEqual("condition_associated_with_gene");
             expect(tree.objects.approved_to_treat.inverse).toEqual("approved_for_treatment_by");
-            expect(tree.objects.catalyzes.inverse).toEqual('is_catalyst_of');
+            expect(tree.objects.catalyzes.inverse).toEqual('has_catalyst');
         })
     })
 
