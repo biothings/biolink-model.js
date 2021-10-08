@@ -32,7 +32,11 @@ describe("Test BioLink Slot Tree class", () => {
             expect(tree.objects.regulates.children).toContain('negatively_regulates');
             expect(tree.objects.affected_by.children).toContain('disrupted_by');
             expect(tree.objects.affected_by.children).not.toContain('negatively_regulates');
-            expect(tree.objects.negatively_regulates.children).toHaveLength(0);
+            expect(tree.objects.negatively_regulates.children).toHaveLength(2);
+            expect(tree.objects.negatively_regulates.children).toEqual([
+              'process_negatively_regulates_process',
+              'entity_negatively_regulates_entity',
+            ]);
         })
 
         test("Test non-explicit inverses are correctly inferred", () => {
@@ -60,7 +64,7 @@ describe("Test BioLink Slot Tree class", () => {
         })
 
         test("Entity without descendants should return empty array", () => {
-            expect(tree.getDescendants("negatively_regulates")).toHaveLength(0);
+            expect(tree.getDescendants('process_positively_regulated_by_process')).toHaveLength(0);
             expect(tree.getDescendants('superclass_of')).toHaveLength(0);
         })
 
