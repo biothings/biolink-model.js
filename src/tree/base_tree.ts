@@ -36,8 +36,17 @@ export default abstract class BaseTree implements BaseTreeObject {
     this._objects_in_tree = {};
     Object.keys(this._objects_in_yaml).map((name) => this.addNewObjectToTree(name));
     Object.keys(this._objects_in_yaml).map((name) => {
-      if ('is_a' in this._objects_in_yaml[name]) {
-        this._objects_in_tree[this._modify(this._objects_in_yaml[name].is_a)].addChild(name);
+      const thisobj = this._objects_in_yaml[name];
+      if ('is_a' in thisobj) {
+        this._objects_in_tree[this._modify(thisobj.is_a)].addChild(name);
+      }
+      if (typeof thisobj.mixins !== 'undefined') {
+        Object.entries(this._objects_in_yaml).map(([name1, mixin]) => {
+          if (mixin.mixin && thisobj.mixins.includes(name1)) {
+            this._objects_in_tree[this._modify(name1)].addChild(name);
+            // console.log(`object ${name} includes mixin ${name1}!`);
+          }
+        })
       }
     });
   }

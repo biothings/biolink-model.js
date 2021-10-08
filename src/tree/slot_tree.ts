@@ -37,7 +37,7 @@ export default class BioLinkClassTree extends BaseTree implements BioLinkSlotTre
     return super.getPath(downstreamNode, upstreamNode) as BioLinkSlotObject[];
   }
 
-  protected inferInverseRelationship(name) {
+  protected inferInverseRelationship(name: string) {
     if (typeof this._objects_in_tree[this._modify(name)].inverse === 'undefined') {
       const inverse = Object.values(this._objects_in_tree).find(
         (obj: BioLinkSlotObject) => obj.inverse === this._modify(name),
