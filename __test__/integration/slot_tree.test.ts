@@ -119,12 +119,12 @@ describe("Test BioLink Slot Tree class", () => {
 
         test("Return all intermediates nodes between upstream and downstream if there're > 1 intermediates", () => {
             const res = tree.getPath("disrupts", "related_to").map(item => item.name);
-            expect(res).toEqual(["affects"]);
+            expect(res).toEqual(["affects", "related_to_at_instance_level"]);
         })
 
         test("Return the intermediate nodes between upstream and downstream if there're only 1 intermediates", () => {
             const res = tree.getPath("disrupts", "related_to").map(item => item.name);
-            expect(res).toEqual(["affects"]);
+            expect(res).toEqual(["affects", "related_to_at_instance_level"]);
         })
 
         test("Return [] if upstream is direct parent of downstream", () => {
