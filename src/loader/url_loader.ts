@@ -7,8 +7,10 @@ export default class URLLoader extends Loader {
   async load(input) {
     let res;
     try {
+      const userAgent = `BTE/${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'} Node/${process.version} ${process.platform}`;
       res = await axios.get(input, {
         responseType: 'text',
+        headers: { 'User-Agent': userAgent },
       });
     } catch (err) {
       throw new FileLoadingError(`Failed to load BioLink Model. Query to ${input} raise an exception.`);
