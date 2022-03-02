@@ -23,6 +23,7 @@ export interface BioLinkObject {
   children: string[];
   description: string;
   name: string;
+  is_mixin: boolean;
   addChild(child: string): void;
 }
 

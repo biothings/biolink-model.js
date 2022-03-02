@@ -5,12 +5,14 @@ export default abstract class BaseObject implements BioLinkObject {
   protected _parent: string;
   protected _children: string[];
   protected _name: string;
+  protected _is_mixin: boolean;
 
   constructor(name: string, info: BioLinkBase) {
     this._name = name;
     this._description = info.description;
     this._parent = info.is_a;
     this._children = [];
+    this._is_mixin = info.mixin;
   }
 
   get parent(): string {
@@ -23,6 +25,10 @@ export default abstract class BaseObject implements BioLinkObject {
 
   get name(): string {
     return this._name;
+  }
+
+  get is_mixin(): boolean {
+    return this._is_mixin;
   }
 
   get children(): string[] {
