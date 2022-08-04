@@ -149,4 +149,22 @@ describe("Test BioLink Slot Tree class", () => {
             }).toThrowError(new NodeNotFound("The node you provide affects2 is not in the tree."))
         })
     })
+
+    describe("Test slot object attributes", () => {
+        let tree;
+        let objs;
+
+        beforeEach(() => {
+            const file = fs.readFileSync(path.resolve(__dirname, '../../data/biolink.yaml'), { encoding: 'utf8' });
+            const jsonObj = yaml.load(file) as BioLinkJSON;
+            objs = jsonObj.slots;
+            tree = new BioLinkSlotTree(objs);
+            tree.construct();
+        })
+
+        test("Canonical predicates should have canonical attribute", () => {
+            console.log(tree.objects);
+            expect(tree.objects.treats.canonical_predicate).toBe(true);
+        })
+    })
 })

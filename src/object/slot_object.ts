@@ -11,6 +11,7 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
   private _close_mapping: string[];
   private _narrow_mapping: string[];
   private _symmetric: boolean;
+  private _canonical_predicate: boolean;
 
   constructor(name: string, info: BioLinkSlot) {
     super(name, info);
@@ -22,6 +23,7 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
     this._exact_mapping = info.exact_mapping;
     this._close_mapping = info.close_mapping;
     this._narrow_mapping = info.narrow_mapping;
+    this._canonical_predicate = info.annotations?.tag === "biolink:canonical_predicate" && info.annotations?.value === true;
   }
 
   get inverse(): string {
@@ -54,6 +56,10 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
 
   get close_mapping(): string[] {
     return this._close_mapping;
+  }
+
+  get canonical_predicate(): boolean {
+    return this._canonical_predicate;
   }
 
   addChild(child: string): void {
