@@ -163,7 +163,6 @@ describe("Test BioLink Slot Tree class", () => {
         })
 
         test("Canonical predicates should have canonical attribute", () => {
-            console.log(tree.objects);
             expect(tree.objects.treats.canonical_predicate).toBe(true);
         })
     })
