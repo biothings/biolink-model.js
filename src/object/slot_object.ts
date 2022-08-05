@@ -23,7 +23,7 @@ export default class Slot extends BaseObject implements BioLinkSlotObject {
     this._exact_mapping = info.exact_mapping;
     this._close_mapping = info.close_mapping;
     this._narrow_mapping = info.narrow_mapping;
-    this._canonical_predicate = info.annotations?.tag === "biolink:canonical_predicate" && info.annotations?.value === true;
+    this._canonical_predicate = info.annotations?.["biolink:canonical_predicate"]?.value === true;
   }
 
   get inverse(): string {
