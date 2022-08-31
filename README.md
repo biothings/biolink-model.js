@@ -2,8 +2,8 @@
 
 A nodejs library for manipulating BioLink Model.
 
-[![Test Coveralls](https://github.com/biothings/biolink-model.js/actions/workflows/coverage.yml/badge.svg)](https://github.com/biothings/biolink-model.js/actions/workflows/coverage.yml)
-[![Coverage Status](https://coveralls.io/repos/github/biothings/biolink-model.js/badge.svg?branch=main)](https://coveralls.io/github/biothings/biolink-model.js?branch=main)
+[![Test Codecov](https://github.com/biothings/biolink-model.js/actions/workflows/test_cov.yml/badge.svg)](https://github.com/biothings/biolink-model.js/actions/workflows/test_cov.yml)
+[![codecov](https://codecov.io/github/biothings/biolink-model.js/branch/main/graph/badge.svg?token=96ZMR2523K)](https://codecov.io/github/biothings/biolink-model.js)
 
 ## 💾 Install
 
