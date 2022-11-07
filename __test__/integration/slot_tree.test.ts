@@ -20,29 +20,34 @@ describe("Test BioLink Slot Tree class", () => {
 
         test("Test all objects are corretly loaded", () => {
             tree.construct();
-            expect(tree.objects).toHaveProperty("negatively_regulates");
-            expect(tree.objects.negatively_regulates).toBeInstanceOf(SlotObject);
-            expect(tree.objects).toHaveProperty("positively_regulates");
+            expect(tree.objects).toHaveProperty("regulates");
+            expect(tree.objects.regulates).toBeInstanceOf(SlotObject);
+            expect(tree.objects).toHaveProperty("affects");
             expect(tree.objects).toHaveProperty("disrupts");
             expect(Object.keys(tree.objects)).toHaveLength(Object.keys(objs).length);
         })
 
         test("Test hierarchical order are correctly parsed", () => {
             tree.construct();
-            expect(tree.objects.regulates.children).toContain('negatively_regulates');
+            expect(tree.objects.affects.children).toContain('regulates');
             expect(tree.objects.affected_by.children).toContain('disrupted_by');
-            expect(tree.objects.affected_by.children).not.toContain('negatively_regulates');
-            expect(tree.objects.negatively_regulates.children).toHaveLength(2);
-            expect(tree.objects.negatively_regulates.children).toEqual([
-              'process_negatively_regulates_process',
-              'entity_negatively_regulates_entity',
+            expect(tree.objects.disrupted_by.children).not.toContain('regulates');
+            expect(tree.objects.affects.children).toHaveLength(7);
+            expect(tree.objects.affects.children).toEqual([
+              'affects_response_to',
+              'regulates',
+              'disrupts',
+              'ameliorates',
+              'exacerbates',
+              'has_adverse_event',
+              'has_side_effect',
             ]);
         })
 
         test("Test non-explicit inverses are correctly inferred", () => {
             tree.construct();
-            expect(tree.objects.gene_associated_with_condition.inverse).toEqual("condition_associated_with_gene");
-            expect(tree.objects.approved_to_treat.inverse).toEqual("approved_for_treatment_by");
+            expect(tree.objects.treats.inverse).toEqual("treated_by");
+            expect(tree.objects.prevents.inverse).toEqual("prevented_by");
             expect(tree.objects.catalyzes.inverse).toEqual('has_catalyst');
         })
     })
@@ -64,7 +69,7 @@ describe("Test BioLink Slot Tree class", () => {
         })
 
         test("Entity without descendants should return empty array", () => {
-            expect(tree.getDescendants('process_positively_regulated_by_process')).toHaveLength(0);
+            expect(tree.getDescendants('catalyzes')).toHaveLength(0);
             expect(tree.getDescendants('superclass_of')).toHaveLength(0);
         })
 
@@ -89,14 +94,13 @@ describe("Test BioLink Slot Tree class", () => {
 
         test("Test multi-level inheritency is correctly parsed", () => {
             tree.construct();
-            expect(tree.getAncestors("affects_abundance_of")).toContain(tree.objects.related_to);
-            expect(tree.getAncestors("affects_abundance_of")).toContain(tree.objects.affects);
-            expect(tree.getAncestors("affects_abundance_of")).not.toContain(tree.objects.negatively_regulates);
+            expect(tree.getAncestors("affects_response_to")).toContain(tree.objects.related_to);
+            expect(tree.getAncestors("affects_response_to")).toContain(tree.objects.affects);
+            expect(tree.getAncestors("affects_response_to")).not.toContain(tree.objects.increase_response_to);
         })
 
         test("Entity without ancestors should return empty array", () => {
             expect(tree.getAncestors("related_to")).toHaveLength(0);
-            expect(tree.getAncestors('regulates')).toHaveLength(0);
         })
 
         test("Entity not in the tree should throw an error", () => {
