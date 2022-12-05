@@ -5,7 +5,7 @@ license: https://creativecommons.org/publicdomain/zero/1.0/
 
 # Version should be kept in sync with primary Git repository release tag
 
-version: 3.1.1
+version: 3.0.3
 
 
 ## ------------
@@ -92,7 +92,7 @@ prefixes:
   LOINC: 'http://loinc.org/rdf/'
   MAXO: 'http://purl.obolibrary.org/obo/MAXO_'
   medgen: 'https://www.ncbi.nlm.nih.gov/medgen/'
-  metacyc.reaction: 'http://identifiers.org/metacyc.reaction:'
+  metacyc.reaction: 'https://identifiers.org/metacyc.reaction:'
   METANETX.REACTION: 'https://www.metanetx.org/equa_info/'
   MESH: 'http://id.nlm.nih.gov/mesh/'
   MI: 'http://purl.obolibrary.org/obo/MI_'
@@ -109,6 +109,7 @@ prefixes:
   OBAN: 'http://purl.org/oban/'
   oboformat: 'http://www.geneontology.org/formats/oboInOwl#'
   OMIM.PS: 'https://www.omim.org/phenotypicSeries/'
+  OBOREL: 'http://purl.obolibrary.org/obo/RO_'
   ORCID: 'https://orcid.org/'
   orphanet: 'http://www.orpha.net/ORDO/Orphanet_'
   os: 'https://github.com/cmungall/owlstar/blob/master/owlstar.ttl'
@@ -129,7 +130,8 @@ prefixes:
   SEED.REACTION: 'https://modelseed.org/biochem/reactions/'
   SEMMEDDB: 'https://skr3.nlm.nih.gov/SemMedDB'
   SIO: 'http://semanticscience.org/resource/SIO_'
-  SNOMEDCT: 'http://snomed.info/id/'
+  SNOMED: 'http://www.snomedbrowser.com/Codes/Details/'
+  SNOMEDCT: 'http://www.snomedbrowser.com/Codes/Details/'
   SPDI: 'https://api.ncbi.nlm.nih.gov/variation/v0/spdi/'
   UBERGRAPH: 'http://translator.renci.org/ubergraph-axioms.ofn#'
   UBERON_CORE: 'http://purl.obolibrary.org/obo/uberon/core#'
@@ -480,7 +482,7 @@ slots:
       - translator_minimal
     required: true
     exact_mappings:
-      - AGRKB:primaryId
+      - agrkb:primaryId
       - gff3:ID
       - gpi:DB_Object_ID
 
@@ -497,7 +499,7 @@ slots:
   type:
     slot_uri: rdf:type
     exact_mappings:
-      - AGRKB:soTermId
+      - agrkb:soTermId
       - gff3:type
       - gpi:DB_Object_Type
 
@@ -575,7 +577,7 @@ slots:
     description: >-
       Symbol for a particular thing
     exact_mappings:
-      - AGRKB:symbol
+      - agrkb:symbol
       - gpi:DB_Object_Symbol
 
   synonym:
@@ -594,29 +596,29 @@ slots:
       # namely, is 'oboInOwl:hasExactSynonym' an instance 'exact_mappings', etc.
       - skos:altLabel
       - gff3:Alias
-      - AGRKB:synonyms
+      - agrkb:synonyms
       - gpi:DB_Object_Synonyms
       # TODO: RTX contributed terms mapped here... May need review?
       - HANCESTRO:0330
       - IAO:0000136
       - RXNORM:has_tradename
 
-  exact synonym:
+  exact_synonym:
     is_a: synonym
     exact_mappings:
       - oboInOwl:hasExactSynonym
 
-  broad synonym:
+  broad_synonym:
     is_a: synonym
     exact_mappings:
       - oboInOwl:hasBroadSynonym
 
-  narrow synonym:
+  narrow_synonym:
     is_a: synonym
     exact_mappings:
       - oboInOwl:hasNarrowSynonym
 
-  related synonym:
+  related_synonym:
     is_a: synonym
     exact_mappings:
       - oboInOwl:hasRelatedSynonym
@@ -1206,7 +1208,7 @@ slots:
       - value: chemical analong
     notes: >-
       please see the ChemicalOrGeneOrGeneProductFormOrVariantEnum (below) for examples of 'form or variant qualifier'
-      terms in the gene->chemical association space.
+      terms in the gene->chemical association space. 
       the qualifier ‘mutation’ combines with the core concept ‘Gene X’ to express the compose concept ‘Mutated forms of Gene X’.
       the qualifier ‘Late Stage’ combines with a core concept of ‘Disease X’ to express the  more specific concept ‘Late Stage forms of Disease X’
       the qualifier ‘Severe’ combines with a core concept of ‘Bleeding’ to express the  more specific concept ‘Severe forms of Bleeding’
@@ -1221,7 +1223,7 @@ slots:
     description: >-
       Composes with the core concept to describe new concepts of a different ontological type. e.g. a process in which
       the core concept participates, a function/activity/role held by the core concept, or a characteristic/quality that
-      inheres in the core concept.  The purpose of the aspect slot is to indicate what aspect is being affected in an
+      inheres in the core concept.  The purpose of the aspect slot is to indicate what aspect is being affected in an 
       'affects' association.
     examples:
       - value: stability
@@ -1229,9 +1231,9 @@ slots:
       - value: expression
       - value: exposure
     notes: >-
-      for good examples of aspects in the gene-> chemical space, please see the
-      GeneOrGeneProductOrChemicalEntityAspectEnum (below) which lists many aspects that can be used to qualify
-      the gene making the full subject a different ontological type.
+      for good examples of aspects in the gene-> chemical space, please see the 
+      GeneOrGeneProductOrChemicalEntityAspectEnum (below) which lists many aspects that can be used to qualify 
+      the gene making the full subject a different ontological type.  
       the qualifier ‘expression’ combines with a core concept of ‘Gene X’ to express the composed concept ‘expression of Gene X’ (Gene → Biological Process)
       the qualifier ‘exposure’ combines with a core concept of ‘Chemical X’ to express the composed concept ‘exposure to Chemical X’ (Chemical → Exposure Process)
       the qualifier ‘Activity’ combines with a core concept of ‘PPARG’ to express the concept ‘activity of PPARG’ (Gene → function/activity)
@@ -1270,7 +1272,7 @@ slots:
       - value: blood
       - value: gut microbiome
     notes: >-
-      the context qualifier ‘hippocampus’ combines with a core concept of ‘neuron’ to express the composed concept ‘neuron in
+      the context qualifier ‘hippocampus’ combines with a core concept of ‘neuron’ to express the composed concept ‘neuron in 
       the hippocampus’. The species_context_qualifier applies taxonomic context, e.g. species-specific molecular activity
 
 
@@ -1280,22 +1282,22 @@ slots:
     description: >-
       Composes with the core concept (+ aspect if provided) to describe a change in its direction or degree.
     notes: >-
-      the qualifier ‘increased’ combines with a core concept of ‘Gene X’ and an aspect of ‘expression’ to express the composed concept ‘increased expression of Gene X’
+      the qualifier ‘increased’ combines with a core concept of ‘Gene X’ and an aspect of ‘expression’ to express the composed concept ‘increased expression of Gene X’   
       the qualifier ‘decreased’ combines with a core concept of ‘Protein X’ and an aspect of ‘abundance’ to express the composed concept ‘decreased abundance of Protein X’
 
   mapped predicate:
     description: >-
-      The predicate that is being replaced by the fully qualified representation of predicate + subject and object
+      The predicate that is being replaced by the fully qualified representation of predicate + subject and object 
       qualifiers.  Only to be used in test data and mapping data to help with the transition to the fully qualified
       predicate model. Not to be used in knowledge graphs.
 
-  predicate mappings:
-    description: >-
-      A collection of relationships that are not used in biolink, but have biolink patterns that can
+  deprecated predicate mappings:
+    description: >- 
+      A collection of relationships that are not used in biolink, but have biolink patterns that can 
       be used to replace them.  This is a temporary slot to help with the transition to the fully qualified predicate
       model in Biolink3.
     multivalued: true
-    range: predicate mapping
+    range: deprecated predicate mapping
     inlined_as_list: true
 
   exact matches:
@@ -1360,17 +1362,17 @@ slots:
     is_a: association slot
     description: >-
       Predicate to be used in an association when subject and object qualifiers are present and the full
-      reading of the statement requires a qualification to the predicate in use in order to refine or
-      increase the specificity of the full statement reading.  This qualifier holds a relationship to be used instead of that
-      expressed by the primary predicate, in a ‘full statement’ reading of the association, where qualifier-based
-      semantics are included.  This is necessary only in cases where the primary predicate does not work in a
+      reading of the statement requires a qualification to the predicate in use in order to refine or 
+      increase the specificity of the full statement reading.  This qualifier holds a relationship to be used instead of that 
+      expressed by the primary predicate, in a ‘full statement’ reading of the association, where qualifier-based 
+      semantics are included.  This is necessary only in cases where the primary predicate does not work in a 
       full statement reading.
     notes: >-
-      to express the statement that “Chemical X causes increased expression of Gene Y”, the core triple is read
-      using the fields subject:ChemX, predicate:affects, object:GeneY . . . and the full statement is read using
-      the fields subject:ChemX, qualified_predicate:causes, object:GeneY, object_aspect: expression,
-      object_direction:increased. The predicate ‘affects’ is needed for the core triple reading, but doesnt make
-      sense in the full statement reading  (because “Chemical X affects increased expression of Gene Y'' is not
+      to express the statement that “Chemical X causes increased expression of Gene Y”, the core triple is read 
+      using the fields subject:ChemX, predicate:affects, object:GeneY . . . and the full statement is read using 
+      the fields subject:ChemX, qualified_predicate:causes, object:GeneY, object_aspect: expression, 
+      object_direction:increased. The predicate ‘affects’ is needed for the core triple reading, but doesnt make 
+      sense in the full statement reading  (because “Chemical X affects increased expression of Gene Y'' is not 
       what we mean to say here: it causes increased expression of Gene Y)
 
 
@@ -1463,7 +1465,7 @@ slots:
       - LOINC:analyzes
       - LOINC:measured_by
       - LOINC:property_of
-      - SEMMEDDB:MEASURES
+      - SEMMEDDB:measures
       - UMLS:measures
 
   catalyst qualifier:
@@ -1506,7 +1508,6 @@ slots:
     broad_mappings:
       - owl:topObjectProperty
     narrow_mappings:
-      - SEMMEDDB:ASSOCIATED_WITH
       - SEMMEDDB:compared_with
       - SEMMEDDB:higher_than
       - SEMMEDDB:lower_than
@@ -1638,17 +1639,19 @@ slots:
     description: >-
       Expresses a relationship between two named things where the relationship is typically generated statistically
       (though not in all cases), and is weaker than its child, 'correlated with', but stronger than its parent,
-      'related to'. This relationship holds between two concepts represented by variables for which a statistical
-      dependence is demonstrated.  E.g. the statement “Atrial Fibrillation (Afib) is associated with Myocardial
-      Infarction (MI)” asserts that having Afib is not statistically independent from whether a patient
-      will also have MI. Note that in Translator associations, the subject and object concepts may map exactly to
-      the statistical variables, or represent related entities for which the variables serve as proxies in an
+      'related to'. This relationship holds between two concepts represented by variables for which a statistical 
+      dependence is demonstrated.  E.g. the statement “Atrial Fibrillation (Afib) is associated with Myocardial 
+      Infarction (MI)” asserts that having Afib is not statistically independent from whether a patient 
+      will also have MI. Note that in Translator associations, the subject and object concepts may map exactly to 
+      the statistical variables, or represent related entities for which the variables serve as proxies in an 
       Association (e.g. diseases, chemical entities or processes).
     annotations:
       canonical_predicate: true
     symmetric: true
     domain: named thing
     range: named thing
+    exact_mappings:
+      - SEMMEDDB:associated_with
     narrow_mappings:
       - RO:0004029
       - SNOMEDCT:47429007
@@ -1660,6 +1663,7 @@ slots:
     domain: ontology class
     range: ontology class
     multivalued: True
+    inverse: subclass of
     in_subset:
       - translator_minimal
     exact_mappings:
@@ -1676,6 +1680,8 @@ slots:
       - OMIM:has_manifestation
       - SNOMED:has_basic_dose_form
       - UMLS:RB
+    annotations:
+      opposite_of: subclass of
 
   subclass of:
     is_a: related to at concept level
@@ -1688,13 +1694,15 @@ slots:
       - translator_minimal
     annotations:
       canonical_predicate: true
+      opposite_of: superclass of
     close_mappings:
       # RTX
       - LOINC:class_of
       - LOINC:has_class
     exact_mappings:
       - rdfs:subClassOf
-      - SEMMEDDB:ISA
+      - SEMMEDDB:IS_A
+      - SEMMEDDB:isa
       - WIKIDATA_PROPERTY:P279
       - CHEMBL.MECHANISM:subset_of
       - GO:isa
@@ -1740,7 +1748,7 @@ slots:
       - skos:exactMatch
       # Semantic Medline definition: "comparative predicate" where the equivalence could simply be functional
       # RTX suggests mapping this to proposed new "biolink:close_match" predicate instead
-      #- SEMMEDDB:same_as
+      #- SEMMEDDB:SAME_AS
       - WIKIDATA_PROPERTY:P2888
       - CHEMBL.MECHANISM:equivalent_to
       - MONDO:equivalentTo
@@ -1763,6 +1771,7 @@ slots:
     exact_mappings:
       - skos:closeMatch
       # Semantic Medline definition: "comparative predicate" where the equivalence could simply be functional
+      - SEMMEDDB:SAME_AS
       - SEMMEDDB:same_as
     narrow_mappings:
       - CHEBI:is_enantiomer_of
@@ -1858,10 +1867,10 @@ slots:
   associated with likelihood of:
     is_a: associated with
     description: >-
-      A a relationship that holds between two concepts represented by variables for which a statistical
-      dependence is demonstrated, wherein the state or value of one variable predicts the future state
-      or value of the other.  E.g. the statement “An Atrial Fibrillation (Afib) diagnosis is associated
-      with likelihood of a Myocardial Infarction (MI) diagnosis” asserts that the state of having Afib
+      A a relationship that holds between two concepts represented by variables for which a statistical 
+      dependence is demonstrated, wherein the state or value of one variable predicts the future state 
+      or value of the other.  E.g. the statement “An Atrial Fibrillation (Afib) diagnosis is associated 
+      with likelihood of a Myocardial Infarction (MI) diagnosis” asserts that the state of having Afib 
       is associated with an increased or decreased likelihood that a patient will later exhibit MI.
     annotations:
       canonical_predicate: true
@@ -1989,7 +1998,7 @@ slots:
     range: gene or gene product
 
   acts upstream of or within positive effect:
-    is_a: acts upstream of or within
+    is_a: acts upstream of
     domain: gene or gene product
     range: biological process
     annotations:
@@ -2004,7 +2013,7 @@ slots:
     range: gene or gene product
 
   acts upstream of or within negative effect:
-    is_a: acts upstream of or within
+    is_a: acts upstream of
     domain: gene or gene product
     range: biological process
     annotations:
@@ -2040,8 +2049,8 @@ slots:
 
   contributor:
     is_a: related to at instance level
-    domain: agent
-    range: information content entity
+    domain: information content entity
+    range: agent
     comments:
       - This is a grouping for predicates relating entities to their associated contributors realizing them
     abstract: true
@@ -2051,8 +2060,8 @@ slots:
   has contributor:
     inverse: contributor
     is_a: related to at instance level
-    domain: information content entity
-    range: agent
+    domain: agent
+    range: information content entity
 
   provider:
     is_a: contributor
@@ -2062,13 +2071,12 @@ slots:
   has provider:
     inverse: provider
     is_a: has contributor
-    domain: information content entity
-    range: agent
+    domain: agent
+    range: information content entity
 
   publisher:
     is_a: contributor
-    domain: agent
-    range: publication
+    domain: publication
     description: >-
       organization or person responsible for publishing books, periodicals, podcasts, games or software.
       Note that in the case of publications which have a containing "published in" node property, the publisher
@@ -2082,13 +2090,12 @@ slots:
   has publisher:
     is_a: has contributor
     inverse: publisher
-    domain: publication
-    range: agent
+    domain: agent
+    range: publication
 
   editor:
     is_a: contributor
-    domain: agent
-    range: publication
+    domain: publication
     description: >-
       editor of a compiled work such as a book or a periodical (newspaper or an academic journal).
       Note that in the case of publications which have a containing "published in" node property, the editor
@@ -2101,13 +2108,12 @@ slots:
   has editor:
     inverse: editor
     is_a: has contributor
-    domain: publication
-    range: agent
+    domain: agent
+    range: publication
 
   author:
     is_a: contributor
-    domain: agent
-    range: publication
+    domain: publication
     description: >-
       an instance of one (co-)creator primarily responsible for a written work
     exact_mappings:
@@ -2117,8 +2123,8 @@ slots:
   has author:
     inverse: author
     is_a: has contributor
-    domain: publication
-    range: agent
+    domain: agent
+    range: publication
 
   ## end of Publication related predicates
 
@@ -2143,6 +2149,7 @@ slots:
     range: named thing
 
   interacts with:
+    abstract: true
     domain: named thing
     range: named thing
     description: >-
@@ -2155,7 +2162,7 @@ slots:
       canonical_predicate: true
     exact_mappings:
       - RO:0002434
-      - SEMMEDDB:INTERACTS_WITH
+      - SEMMEDDB:interacts_with
     narrow_mappings:
       # RO terms RTX mapped to 'biolink:related_to' but which imply a chemical interaction
       - RO:0002103
@@ -2163,12 +2170,12 @@ slots:
       - RO:0002130
     notes: >-
       please use a more specific child predicate of interacts with, either physically interacts with
-      or genetically interacts with.
+      or genetically interacts with. 
 
   physically interacts with:
     is_a: interacts with
     description: >-
-      holds between two entities that make physical contact as part of some interaction.
+      holds between two entities that make physical contact as part of some interaction. 
       does not imply a causal relationship.
     in_subset:
       - translator_minimal
@@ -2185,7 +2192,6 @@ slots:
       - CHEMBL.MECHANISM:sequestering_agent
       - CHEMBL.MECHANISM:substrate
       - DRUGBANK:target
-
     narrow_mappings:
       # Defined more narrowly as "substance interaction", thus specific applies to a subclass entities
       - DRUGBANK:drug-interaction
@@ -2196,7 +2202,7 @@ slots:
   directly physically interacts with:
     is_a: physically interacts with
     description: >-
-      A causal mechanism mediated by a direct contact between the effector and target entities (this contact may
+      A causal mechanism mediated by a direct contact between the effector and target entities (this contact may 
       be weak or strong, transient or stable).
     symmetric: true
     exact_mappings:
@@ -2217,7 +2223,7 @@ slots:
   binds:
     is_a: directly physically interacts with
     description: >-
-      A causal mechanism mediated by the direct contact between effector and target chemical or biomolecular entity,
+      A causal mechanism mediated by the direct contact between effector and target chemical or biomolecular entity, 
       which form a stable physical interaction.
     symmetric: true
     annotations:
@@ -2265,9 +2271,10 @@ slots:
       - DRUGBANK:pathway
     exact_mappings:
       - SEMMEDDB:AFFECTS
+      - SEMMEDDB:affects
       - DGIdb:affects
     narrow_mappings:
-      - SEMMEDDB:ADMINISTERED_TO
+      - SEMMEDDB:administered_to
       - CTD:prediction_hypothesis
       - GOREL:0001006
       - CTD:inferred
@@ -2357,7 +2364,7 @@ slots:
       - SIO:001331 # diagnosis
     exact_mappings:
       - DrugCentral:5271
-      - SEMMEDDB:DIAGNOSES
+      - SEMMEDDB:diagnoses
 
   is diagnosed by:
     is_a: related to at instance level
@@ -2486,9 +2493,9 @@ slots:
     is_a: affects
     description: >-
       A more specific form of affects, that implies the effect results from a biologically evolved control mechanism.
-      Gene-affects-gene relationships will (almost) always involve regulation.  Chemical-affects-gene relationships
-      may in some cases be considered regulation (if the chemical is some endogenously produced signaling molecule
-      created to execute a certain function/activity), but exogenous/environmental chemical-affects-gene relationships
+      Gene-affects-gene relationships will (almost) always involve regulation.  Chemical-affects-gene relationships 
+      may in some cases be considered regulation (if the chemical is some endogenously produced signaling molecule 
+      created to execute a certain function/activity), but exogenous/environmental chemical-affects-gene relationships 
       are usually not cases of regulation.
     domain: physical essence or occurrent
     range: physical essence or occurrent
@@ -2527,6 +2534,7 @@ slots:
       opposite_of: enables
     exact_mappings:
       - SEMMEDDB:DISRUPTS
+      - SEMMEDDB:disrupts
       - CHEMBL.MECHANISM:disrupting_agent
     narrow_mappings:
       - RO:0004024
@@ -2582,6 +2590,8 @@ slots:
     description: >-
       inverse of transcribed from
     inverse: transcribed from
+    annotations:
+      opposite_of: transcribed from
     exact_mappings:
       - RO:0002511
       - SIO:010080
@@ -2592,7 +2602,7 @@ slots:
     range: gene
     annotations:
       canonical_predicate: true
-    inverse: transcribed to
+      opposite_of: transcribed to
     description: >-
       x is transcribed from y if and only if x is synthesized from template y
     exact_mappings:
@@ -2605,7 +2615,7 @@ slots:
     range: protein
     annotations:
       canonical_predicate: true
-    inverse: translation of
+      opposite_of: translation of
     description: >-
       x (amino acid chain/polypeptide) is the ribosomal translation of y (transcript) if and only if a ribosome
       reads y (transcript) through a series of triplet codon-amino acid adaptor activities (GO:0030533)
@@ -2624,6 +2634,8 @@ slots:
     close_mappings:
       - RO:0002512
       - SIO:010083
+    annotations:
+      opposite_of: translates to
 
   homologous to:
     is_a: similar to
@@ -2692,6 +2704,7 @@ slots:
       canonical_predicate: true
     exact_mappings:
       - SEMMEDDB:COEXISTS_WITH
+      - SEMMEDDB:coexists_with
     narrow_mappings:
       - BSPO:0000096
       - BSPO:0000097
@@ -2946,8 +2959,8 @@ slots:
     description: >-
       holds between a gene and a disease or phenotypic feature that the gene or its alleles/products may influence,
       contribute to, or correlate with
-    domain: disease or phenotypic feature
-    range: gene
+    domain: gene
+    range: disease or phenotypic feature
     annotations:
       canonical_predicate: true
     in_subset:
@@ -2966,8 +2979,8 @@ slots:
     aliases: [ 'disease associated with gene' ]
     description: >-
       holds between a gene and a disease or phenotypic feature that may be influenced, contribute to, or be correlated with the gene or its alleles/products
-    domain: gene
-    range: disease or phenotypic feature
+    domain: disease or phenotypic feature
+    range: gene
     in_subset:
       - translator_minimal
     inverse: gene associated with condition
@@ -2998,7 +3011,7 @@ slots:
       canonical_predicate: true
       opposite_of: prevents
     exact_mappings:
-      - SEMMEDDB:PREDISPOSES
+      - SEMMEDDB:predisposes
 
   has predisposing factor:
     is_a: risk affected by
@@ -3046,6 +3059,7 @@ slots:
       opposite_of: prevents
     exact_mappings:
       - SEMMEDDB:CAUSES
+      - SEMMEDDB:causes
       - WIKIDATA_PROPERTY:P1542
       - SNOMED:cause_of
       - RO:0003303
@@ -3085,7 +3099,7 @@ slots:
     description: >-
       holds between two entities where the occurrence, existence,
       or activity of one is caused by the occurrence or generation of the other
-    is_a: contribution from
+    is_a: related to at instance level
     aliases: [ 'disease caused by disruption of', 'disease has basis in dysfunction of',
                'realized in response to', 'realized in response to stimulus' ]
     in_subset:
@@ -3106,12 +3120,12 @@ slots:
     is_a: affects
     description: >-
       A relationship between an entity (e.g. a genotype,
-      genetic variation, chemical, or environmental exposure, clinical intervention)
+      genetic variation, chemical, or environmental exposure)
       and a condition (a phenotype or disease), where the
       presence of the entity reduces or eliminates some or
       all aspects of the condition.
     # 'biological entity' currently includes 'exposure event' which covers alot of related ground
-    domain: named thing
+    domain: biological entity
     range: disease or phenotypic feature
     annotations:
       canonical_predicate: true
@@ -3123,7 +3137,7 @@ slots:
     inverse: ameliorates
     is_a: affected by
     domain: disease or phenotypic feature
-    range: named thing
+    range: biological entity
 
   exacerbates:
     is_a: affects
@@ -3140,7 +3154,7 @@ slots:
     exact_mappings:
       - RO:0003309
     broad_mappings:
-      - SEMMEDDB:COMPLICATES
+      - SEMMEDDB:complicates
 
   is exacerbated by:
     inverse: exacerbates
@@ -3168,6 +3182,7 @@ slots:
     exact_mappings:
       - DRUGBANK:treats
       - SEMMEDDB:TREATS
+      - SEMMEDDB:treats
       - WIKIDATA_PROPERTY:P2175
     narrow_mappings:
       # "is substance that treats" constrains statements to
@@ -3230,6 +3245,7 @@ slots:
       - translator_minimal
     exact_mappings:
       - SEMMEDDB:PREVENTS
+      - SEMMEDDB:prevents
     narrow_mappings:
       # more restricted case of a material entity mitigating a pathological process
       - RO:0002599
@@ -3246,10 +3262,10 @@ slots:
   correlated with:
     is_a: associated with
     description: >-
-      A relationship that holds between two concepts represented by variables for which a statistical dependence is
+      A relationship that holds between two concepts represented by variables for which a statistical dependence is 
       demonstrated using a correlation analysis method.
     notes: >-
-      These concepts may map exactly to the statistical variables, or represent related entities for which the
+      These concepts may map exactly to the statistical variables, or represent related entities for which the 
       variables serve as proxies in an Association (e.g. diseases, chemical entities or processes).
     domain: named thing
     range: named thing
@@ -3267,8 +3283,8 @@ slots:
   positively correlated with:
     is_a: correlated with
     description: >-
-      A relationship that holds between two concepts represented by variables for which a statistical correlation
-      is demonstrated, wherein variable values move together in the same direction (i.e. increased in one or
+      A relationship that holds between two concepts represented by variables for which a statistical correlation 
+      is demonstrated, wherein variable values move together in the same direction (i.e. increased in one or 
       presence of one correlates with an increase or presence of the other).
     domain: named thing
     range: named thing
@@ -3284,8 +3300,8 @@ slots:
   negatively correlated with:
     is_a: correlated with
     description: >-
-      A relationship that holds between two concepts represented by variables for which a statistical correlation
-      is demonstrated, wherein variable values move in opposite directions (i.e. increased in one or presence of
+      A relationship that holds between two concepts represented by variables for which a statistical correlation 
+      is demonstrated, wherein variable values move in opposite directions (i.e. increased in one or presence of 
       one correlates with a decrease or absence of the other).
     domain: named thing
     range: named thing
@@ -3452,8 +3468,10 @@ slots:
     narrow_mappings:
       # SemMedDb term 'OCCURS_IN' constrained to something (other than process) occurring in a group or population
       - SEMMEDDB:OCCURS_IN
+      - SEMMEDDB:occurs_in
       # SemMedDb term 'PROCESS_IN' constrained specifically to a process occurring in the object concept entity
       - SEMMEDDB:PROCESS_OF
+      - SEMMEDDB:process_of
       # Uberon term constrained to a 'site' as object concept
       - UBERON_CORE:site_of
       - LOINC:has_imaged_location
@@ -3539,6 +3557,7 @@ slots:
     exact_mappings:
       - RO:0001015
       - SEMMEDDB:LOCATION_OF
+      - SEMMEDDB:location_of
       - WIKIDATA_PROPERTY:P276
       # RTX tagged this as an inverse of biolink:located_in
       - FMA:location_of
@@ -3740,6 +3759,7 @@ slots:
     exact_mappings:
       - BFO:0000050
       - SEMMEDDB:PART_OF
+      - SEMMEDDB:part_of
       - WIKIDATA_PROPERTY:P361
       - FMA:part_of
       - RXNORM:constitutes
@@ -3804,8 +3824,8 @@ slots:
     is_a: has participant
     description: >-
       holds between a process and a continuant, where the continuant is an input into the process
-    domain: biological process or activity
-    range: occurrent
+    domain: occurrent
+    range: biological process or activity
     annotations:
       canonical_predicate: true
       opposite_of: has output
@@ -3817,6 +3837,7 @@ slots:
     exact_mappings:
       - RO:0002233
       - SEMMEDDB:USES
+      - SEMMEDDB:uses
     narrow_mappings:
       - LOINC:has_fragments_for_synonyms
       - LOINC:has_system
@@ -3834,8 +3855,8 @@ slots:
 
   is input of:
     is_a: participates in
-    domain: occurrent
-    range: biological process or activity
+    domain: biological process or activity
+    range: occurrent
     inverse: has input
     in_subset:
       - translator_minimal
@@ -3844,8 +3865,8 @@ slots:
     is_a: has participant
     description: >-
       holds between a process and a continuant, where the continuant is an output of the process
-    domain: biological process or activity
-    range: occurrent
+    domain: occurrent
+    range: biological process or activity
     annotations:
       canonical_predicate: true
       opposite_of: has input
@@ -3869,8 +3890,8 @@ slots:
 
   is output of:
     is_a: participates in
-    domain: occurrent
-    range: biological process or activity
+    range: occurrent
+    domain: biological process or activity
     inverse: has output
     in_subset:
       - translator_minimal
@@ -3879,8 +3900,7 @@ slots:
     is_a: related to at instance level
     description: >-
       holds between a process and a continuant, where the continuant is somehow involved in the process
-    domain: biological process or activity
-    range: occurrent
+    domain: occurrent
     annotations:
       canonical_predicate: true
     in_subset:
@@ -3913,37 +3933,32 @@ slots:
 
   catalyzes:
     is_a: participates in
-    domain: nucleic acid entity
-    range: molecular activity
+    # domain: nucleic acid entity
+    # range: molecular activity
     annotations:
       canonical_predicate: true
 
   has catalyst:
     is_a: has participant
     inverse: catalyzes
-    domain: molecular activity
-    range: nucleic acid entity
 
   has substrate:
     is_a: has participant
-    domain: molecular activity
-    range: chemical entity or gene or gene product
+    # domain: molecular activity
+    # range: chemical entity or gene or gene_product
     annotations:
       canonical_predicate: true
 
   is substrate of:
     is_a: participates in
     inverse: has substrate
-    domain: chemical entity or gene or gene product
-    range: molecular activity
 
   participates in:
     is_a: related to at instance level
     description: >-
       holds between a continuant and a process, where the continuant is somehow involved
       in the process
-    range: biological process or activity
-    domain: occurrent
+    range: occurrent
     inverse: has participant
     in_subset:
       - translator_minimal
@@ -3972,8 +3987,8 @@ slots:
       holds between a continuant and a process or function, where
       the continuant actively contributes to part or all of
       the process or function it realizes
-    domain: occurrent
-    range: molecular activity
+    domain: molecular activity
+    range: occurrent
     annotations:
       canonical_predicate: true
     in_subset:
@@ -3990,8 +4005,8 @@ slots:
 
   actively involves:
     is_a: has participant
-    domain: molecular activity
-    range: occurrent
+    domain: occurrent
+    range: molecular activity
     inverse: actively involved in
     exact_mappings:
       - RO:0002331
@@ -4014,10 +4029,9 @@ slots:
       - NCIT:R52
       - RO:0002500
 
-  can be carried out by:
+  has capability:
     is_a: actively involves
     inverse: capable of
-    domain: occurrent
 
   enables:
     is_a: participates in
@@ -4050,7 +4064,7 @@ slots:
 
   derives into:
     is_a: related to at instance level
-    aliases: [ 'is normal cell origin of disease', 'may be normal cell origin of disease' ]
+    aliases: [ 'is normal cell origin of disease','may be normal cell origin of disease' ]
     description: >-
       holds between two distinct material entities, the old entity and
       the new entity, in which the new entity begins to exist when
@@ -4060,12 +4074,12 @@ slots:
       - translator_minimal
     inverse: derives from
     # TODO: fix this according to WG notes. Example of both opposite and inverse
-    # Commenting as it feels very wrong. A good example with both opposite and inverse is `has active ingredient`
-    # annotations:
-    #   opposite_of: subclass of
+    annotations:
+      opposite_of: subclass of
     exact_mappings:
       - RO:0001001
       - SEMMEDDB:CONVERTS_TO
+      - SEMMEDDB:converts_to
       # RTX posted terms as inverse of 'biolink:derives_from'
       - FMA:derives
 
@@ -4242,6 +4256,7 @@ slots:
       - translator_minimal
     exact_mappings:
       - SEMMEDDB:MANIFESTATION_OF
+      - SEMMEDDB:manifestation_of
       - OMIM:manifestation_of
     broad_mappings:
       # Wikidata's definition is slightly broader: "inherent and characteristic embodiment of a given concept"
@@ -4289,6 +4304,7 @@ slots:
       - RO:0003000
       - WIKIDATA_PROPERTY:P1056
       - SEMMEDDB:PRODUCES
+      - SEMMEDDB:produces
     narrow_mappings:
       - NCIT:R29
       - SNOMED:has_process_output
@@ -4347,7 +4363,7 @@ slots:
     range: occurrent
     annotations:
       canonical_predicate: true
-    inverse: preceded by
+      opposite_of: preceded by
     in_subset:
       - translator_minimal
     close_mappings:
@@ -4358,6 +4374,7 @@ slots:
     exact_mappings:
       - BFO:0000063
       - SEMMEDDB:PRECEDES
+      - SEMMEDDB:precedes
       - SNOMED:occurs_before
     broad_mappings:
       # the Wikidata definition is subtly broader, focusing on a series not strictly temporal in nature
@@ -4573,10 +4590,10 @@ slots:
     is_a: affects
     aliases: [ 'adverse effect']
     description: >-
-      An untoward medical occurrence in a patient or clinical investigation subject that happens during treatment
-      with a therapeutic agent. Adverse events may be caused by something
-      other than the drug or therapy being given and may include abnormal laboratory finding, symptoms, or
-      diseases temporally associated with the treatment, whether or not considered related to the treatment.
+      An untoward medical occurrence in a patient or clinical investigation subject that happens during treatment 
+      with a therapeutic agent. Adverse events may be caused by something 
+      other than the drug or therapy being given and may include abnormal laboratory finding, symptoms, or 
+      diseases temporally associated with the treatment, whether or not considered related to the treatment. 
       Adverse events are unintended effects that occur when a medication is administered correctly.
     domain: chemical or drug or treatment
     range: disease or phenotypic feature
@@ -4594,7 +4611,7 @@ slots:
     is_a: affects
     description: >-
       An unintended, but predictable, secondary effect shown to be correlated with a therapeutic agent, drug or treatment.
-      Side effects happen at normal, recommended doses or treatments, and are unrelated to the intended purpose of
+      Side effects happen at normal, recommended doses or treatments, and are unrelated to the intended purpose of 
       the medication.
     notes: >-
       Side effects are listed on drug labels. There can be positive side effects, while adverse events are always negative.
@@ -4734,7 +4751,7 @@ slots:
     inverse: develops from
 
   in taxon:
-    aliases: [ 'instance of', 'is organism source of gene product', 'organism has gene', 'gene found in organism', 'gene product has organism source' ]
+    aliases: [ 'instance of', 'is organism source of gene product', 'organism has gene', 'gene found in organism',' gene product has organism source' ]
     is_a: related to at instance level
     domain: thing with taxon
     range: organism taxon
@@ -4781,7 +4798,7 @@ slots:
   association slot:
     abstract: true
     domain: association
-    aliases: [ 'edge property', 'statement property', 'node qualifier', 'edge qualifier', 'statement qualifier' ]
+    aliases: [ 'edge property','statement property','node qualifier','edge qualifier','statement qualifier' ]
     description: >-
       any slot that relates an association to another entity
 
@@ -4897,7 +4914,7 @@ slots:
     is_a: association slot
     description: >-
       connects an association to an instance of supporting study result
-
+    
   mechanism of action:
     is_a: association slot
     range: boolean
@@ -4937,9 +4954,9 @@ slots:
       primary in any association.  "aggregator knowledge source" can be used to caputre non-primary sources.
     range: information resource
     notes: >-
-      For example: a single ChemicalToGene Edge originally curated by ClinicalTrials.org, is aggregated by ChEMBL, then
-      incorporated into the MolePro KP, then sent via TRAPI message to the ARAGORN ARA, and finally sent to
-      the NCATS ARS. The retrieval path for this Edge is as follows:
+      For example: a single ChemicalToGene Edge originally curated by ClinicalTrials.org, is aggregated by ChEMBL, then 
+      incorporated into the MolePro KP, then sent via TRAPI message to the ARAGORN ARA, and finally sent to 
+      the NCATS ARS. The retrieval path for this Edge is as follows: 
       ARS--retrieved_from-->  ARAGORN  --retrieved_from-->   MolePro  --retrieved_from--> ChEMBL --retrieved_from-->  ClinicalTrials.gov
       The "primary knowledge source" for this edge is "infores:clinical-trials-gov".  "infores:chembl" and "infores:molecular_data_provider"
       are listed in the "aggregator knowledge source" property.
@@ -4953,13 +4970,13 @@ slots:
     range: information resource
     multivalued: true
     notes: >-
-      For example, in this Feature Variable Association Edge generated by the Exposure Agent’s ICEES KP,
-      through statistical analysis of clinical and environmental data supplied by the UNC Clinical Data Warehouse,
-      the Edge is passed to the Ranking Agent’s ARAGORN ARA,
+      For example, in this Feature Variable Association Edge generated by the Exposure Agent’s ICEES KP, 
+      through statistical analysis of clinical and environmental data supplied by the UNC Clinical Data Warehouse, 
+      the Edge is passed to the Ranking Agent’s ARAGORN ARA, 
       and then on to the ARS. The retrieval path for this Edge is as follows:
       ARS--retrieved_from-->  ARAGORN  --retrieved_from-->   ICEES --supporting_data_from-->  UNC Data Warehouse
-      This example illustrates how to represent the source provenance of KP-generated knowledge, including the source of
-      data from which the knowledge was derived.
+      This example illustrates how to represent the source provenance of KP-generated knowledge, including the source of 
+      data from which the knowledge was derived.   
       The "primary knowledge source" for this edge is "infores:icees-asthma". A "supporting data source" for this KP-
       generated knowledge is "infores:unc-cdw-health."  The "aggregator knowledge source" for this data is "infores:aragorn-ara"
 
@@ -4972,13 +4989,13 @@ slots:
     range: information resource
     multivalued: true
     notes: >-
-      For example, in this Feature Variable Association Edge generated by the Exposure Agent’s ICEES KP,
-      through statistical analysis of clinical and environmental data supplied by the UNC Clinical Data Warehouse,
-      the Edge is passed to the Ranking Agent’s ARAGORN ARA,
+      For example, in this Feature Variable Association Edge generated by the Exposure Agent’s ICEES KP, 
+      through statistical analysis of clinical and environmental data supplied by the UNC Clinical Data Warehouse, 
+      the Edge is passed to the Ranking Agent’s ARAGORN ARA, 
       and then on to the ARS. The retrieval path for this Edge is as follows:
       ARS--retrieved_from-->  ARAGORN  --retrieved_from-->   ICEES --supporting_data_from-->  UNC Data Warehouse
-      This example illustrates how to represent the source provenance of KP-generated knowledge, including the source of
-      data from which the knowledge was derived.
+      This example illustrates how to represent the source provenance of KP-generated knowledge, including the source of 
+      data from which the knowledge was derived.   
       The "primary knowledge source" for this edge is "infores:icees-asthma". A "supporting data source" for this KP-
       generated knowledge is "infores:unc-cdw-health."  The "aggregator knowledge source" for this data is "infores:aragorn-ara"
 
@@ -5045,13 +5062,13 @@ slots:
   expected count:
     is_a: association slot
     description: >-
-      The expected (calculated) number of instances in a dataset/cohort whose records contain both the subject and
+      The expected (calculated) number of instances in a dataset/cohort whose records contain both the subject and 
       object concept of an association if the subject and object concepts are independent.
 
   relative frequency subject:
     is_a: association slot
     description: >-
-      The frequency at which subject and object concepts co-occur in
+      The frequency at which subject and object concepts co-occur in 
       records within a dataset/cohort, relative to the frequency at which the subject
       concept appears in these same records.
     range: float
@@ -5061,7 +5078,7 @@ slots:
   relative frequency object:
     is_a: association slot
     description: >-
-      The frequency at which subject and object concepts co-occur in
+      The frequency at which subject and object concepts co-occur in 
       records within a dataset/cohort, relative to the frequency at which the object
       concept appears in these same records.
     range: string
@@ -5085,18 +5102,18 @@ slots:
     description: >-
       The adjusted p-value is the probability of obtaining test results
       at least as extreme as the results actually observed, under the assumption that
-      the null hypothesis is correct, adjusted for multiple comparisons.
-      P is always italicized and capitalized. The actual P value* should be expressed (P=. 04)
+      the null hypothesis is correct, adjusted for multiple comparisons.  
+      P is always italicized and capitalized. The actual P value* should be expressed (P=. 04) 
       rather than expressing a statement of inequality (P<. 05), unless P<.
     range: float
 
   bonferonni adjusted p value:
     is_a: adjusted p value
     description: >-
-      The Bonferroni correction is an adjustment made to P values when several dependent or independent
-      statistical tests are being performed simultaneously on a single data set. To perform a Bonferroni
-      correction, divide the critical P value (α) by the number of comparisons being made.  P is always italicized and
-      capitalized. The actual P value* should be expressed (P=. 04) rather than expressing a statement of inequality
+      The Bonferroni correction is an adjustment made to P values when several dependent or independent 
+      statistical tests are being performed simultaneously on a single data set. To perform a Bonferroni 
+      correction, divide the critical P value (α) by the number of comparisons being made.  P is always italicized and 
+      capitalized. The actual P value* should be expressed (P=. 04) rather than expressing a statement of inequality 
       (P<. 05), unless P<.
     range: float
     examples:
@@ -5113,7 +5130,7 @@ slots:
   supporting documents:
     is_a: association slot
     description: >-
-      One or more referencable documents that report the statement expressed in an Association, or provide
+      One or more referencable documents that report the statement expressed in an Association, or provide 
       information used as evidence supporting this statement.
     range: uriorcurie
     multivalued: true
@@ -5227,7 +5244,7 @@ slots:
     aliases: ["supporting publications"]
     singular_name: publication
     description: >-
-      One or more publications that report the statement expressed in an Association, or provide information used as
+      One or more publications that report the statement expressed in an Association, or provide information used as 
       evidence supporting this statement.
     is_a: supporting documents
     multivalued: true
@@ -5338,14 +5355,14 @@ slots:
   supporting study metadata:
     is_a: association slot
     description: >-
-      Information about a study used to generate information used as evidence to support the knowledge expressed in an
+      Information about a study used to generate information used as evidence to support the knowledge expressed in an 
       Association. In practice, data creators should use one of the more specific subtypes of this property.
     abstract: true
 
   supporting study method type:
     is_a: supporting study metadata
     description: >-
-      A type of method that was applied in a study used to generate the information used as evidence (e.g. a type of
+      A type of method that was applied in a study used to generate the information used as evidence (e.g. a type of 
       experimental assay, or statistical calculation, or computational analysis).
     range: uriorcurie
 
@@ -5358,14 +5375,14 @@ slots:
   supporting study size:
     is_a: supporting study metadata
     description: >-
-      The sample size used in a study that provided evidence for the association (e.g. 'n' of a cohort for a
+      The sample size used in a study that provided evidence for the association (e.g. 'n' of a cohort for a 
       clinical study).
     range: integer
 
   supporting study cohort:
     is_a: supporting study metadata
     description: >-
-      A description of a study population/cohort that was interrogated to provide evidence for the association
+      A description of a study population/cohort that was interrogated to provide evidence for the association 
       (e.g. the inclusion and exclusion criteria).
     range: string
 
@@ -5378,21 +5395,21 @@ slots:
   supporting study context:
     is_a: supporting study metadata
     description: >-
-      A term or terms describing the experimental setting/context in which evidence supporting the Association was
-      generated ('context' may be defined by many factors, including taxon, model system (e.g. cell line type), tissue
+      A term or terms describing the experimental setting/context in which evidence supporting the Association was 
+      generated ('context' may be defined by many factors, including taxon, model system (e.g. cell line type), tissue 
       type, disease, etc.).
     range: string
 classes:
 
-  mapping collection:
+  deprecated mapping collection:
     description: >-
       A collection of deprecated mappings.
     abstract: true
     slots:
-      - predicate mappings
+      - deprecated predicate mappings
     tree_root: true
 
-  predicate mapping:
+  deprecated predicate mapping:
     description: >-
       A deprecated predicate mapping object contains the deprecated predicate and an example of the rewiring that should
       be done to use a qualified statement in its place.
@@ -5459,7 +5476,7 @@ classes:
       - MESH
       - UMLS
       - KEGG.BRITE ## br/ko number
-
+  
   annotation:
     description: >-
       Biolink Model root class for entity annotations.
@@ -5663,9 +5680,9 @@ classes:
       - UMLS
     in_subset:
       - model_organism_database
-
+  
   ## Temporal Entities
-
+  
   event:
     is_a: named thing
     description: >-
@@ -5683,15 +5700,15 @@ classes:
 
   study result:
     abstract: true
-    description: >-
-      A collection of data items from a study that are about a particular study subject or experimental unit (the
+    description: >- 
+      A collection of data items from a study that are about a particular study subject or experimental unit (the 
       'focus' of the Result) - optionally with context/provenance metadata that may be relevant to the interpretation
       of this data as evidence.
     notes:
-      The data/metadata included in a Study Result object are typically a subset of data from a larger study data set,
-      that are selected by a curator because they may be useful as evidence for deriving knowledge about a specific
-      focus of the study. The notion of a 'study' here is defined broadly to include any research activity at any
-      scale that is aimed at generating knowledge or hypotheses. This may include a single assay or computational
+      The data/metadata included in a Study Result object are typically a subset of data from a larger study data set, 
+      that are selected by a curator because they may be useful as evidence for deriving knowledge about a specific 
+      focus of the study. The notion of a 'study' here is defined broadly to include any research activity at any 
+      scale that is aimed at generating knowledge or hypotheses. This may include a single assay or computational 
       analyses, or a larger scale clinical trial or experimental research investigation.
     is_a: information content entity
 
@@ -5717,10 +5734,10 @@ classes:
 
   common data element:
     is_a: information content entity
-    description: >-
-      A Common Data Element (CDE) is a standardized, precisely defined question, paired with a set of allowable
-      responses, used systematically across different sites, studies, or clinical trials to ensure consistent
-      data collection. Multiple CDEs (from one or more Collections) can be curated into Forms.
+    description: >- 
+      A Common Data Element (CDE) is a standardized, precisely defined question, paired with a set of allowable 
+      responses, used systematically across different sites, studies, or clinical trials to ensure consistent 
+      data collection. Multiple CDEs (from one or more Collections) can be curated into Forms. 
       (https://cde.nlm.nih.gov/home)
     close_mappings:
       - NCIT:C19984
@@ -5917,8 +5934,8 @@ classes:
     is_a: information content entity
     aliases: [ 'knowledgebase' ]
     description: >-
-      A database or knowledgebase and its supporting ecosystem of interfaces
-      and services that deliver content to consumers (e.g. web portals, APIs,
+      A database or knowledgebase and its supporting ecosystem of interfaces 
+      and services that deliver content to consumers (e.g. web portals, APIs, 
       query endpoints, streaming services, data downloads, etc.).
       A single Information Resource by this definition may span many different datasets or
       databases, and include many access endpoints and user
@@ -6404,7 +6421,6 @@ classes:
       - translator_minimal
     id_prefixes:
       - UNII
-      - CHEBI
       - MESH
       - CAS #CAS numbers are given for things like plant extracts as well.
       - UMLS
@@ -6975,7 +6991,7 @@ classes:
       Either one of a disease or an individual phenotypic feature.
       Some knowledge resources such as Monarch treat these as
       distinct, others such as MESH conflate.  Please see definitions of phenotypic feature and disease in this model
-      for their independent descriptions.  This class is helpful to enforce domains and ranges
+      for their independent descriptions.  This class is helpful to enforce domains and ranges  
       that may involve either a disease or a phenotypic feature.
     union_of:
       - disease
@@ -6987,9 +7003,9 @@ classes:
   disease:
     aliases: [ 'condition', 'disorder', 'medical condition' ]
     description: >-
-      A disorder of structure or function, especially one that produces specific
-      signs, phenotypes or symptoms or that affects a specific location and is not simply a
-      direct result of physical injury.  A disposition to undergo pathological processes that exists in an
+      A disorder of structure or function, especially one that produces specific 
+      signs, phenotypes or symptoms or that affects a specific location and is not simply a 
+      direct result of physical injury.  A disposition to undergo pathological processes that exists in an 
       organism because of one or more disorders in that organism.
     is_a: disease or phenotypic feature
     exact_mappings:
@@ -7043,7 +7059,7 @@ classes:
     aliases: [ 'sign', 'symptom', 'phenotype', 'trait', 'endophenotype' ]
     is_a: disease or phenotypic feature
     description: >-
-      A combination of entity and quality that makes up a phenotyping statement. An observable characteristic of an
+      A combination of entity and quality that makes up a phenotyping statement. An observable characteristic of an 
       individual resulting from the interaction of its genotype with its molecular and physical environment.
     examples:
       - value: MP:0001262
@@ -7142,7 +7158,7 @@ classes:
       - model_organism_database
 
   cellular component:
-    aliases: [ 'cell component', 'cell part' ]
+    aliases: [ 'cell component','cell part' ]
     is_a: anatomical entity
     description: >-
       A location in or around a cell
@@ -7493,16 +7509,16 @@ classes:
       - NCIT:C13379
       - SIO:001379
       - UMLS:C1514562
-
+  
   posttranslational modification:
     is_a: biological entity
     description: >-
-      A chemical modification of a polypeptide or protein that occurs after translation.
-      e.g. polypeptide cleavage to form separate proteins, methylation or acetylation of histone tail amino acids,
+      A chemical modification of a polypeptide or protein that occurs after translation. 
+      e.g. polypeptide cleavage to form separate proteins, methylation or acetylation of histone tail amino acids, 
       protein ubiquitination.
     mixins:
       - gene product isoform mixin
-
+  
   protein family:
     is_a: biological entity
     exact_mappings:
@@ -7597,7 +7613,7 @@ classes:
       - has gene or gene product
 
   gene family:
-    aliases: [ 'orthogroup', 'protein family' ]
+    aliases: [ 'orthogroup','protein family' ]
     is_a: biological entity
     exact_mappings:
       - NCIT:C26004
@@ -7746,7 +7762,7 @@ classes:
       - model_organism_database
 
   snv:
-    aliases: [ 'single nucleotide variant', 'single nucleotide polymorphism', 'snp' ]
+    aliases: [ 'single nucleotide variant','single nucleotide polymorphism', 'snp' ]
     is_a: sequence variant
     description: >-
       SNVs are single nucleotide positions in genomic DNA at
@@ -7809,7 +7825,7 @@ classes:
       defined in the phenotypic abnormality sub-ontology, with respect
       to severity, laterality, and other aspects
     exact_mappings:
-
+      - HP:0012823
 
   clinical course:
     is_a: clinical attribute
@@ -8061,7 +8077,7 @@ classes:
 
   biotic exposure:
     is_a: attribute
-    aliases: [ 'viral exposure', 'bacterial exposure' ]
+    aliases: [ 'viral exposure','bacterial exposure' ]
     mixins:
       - exposure event
     description: >-
@@ -8210,9 +8226,6 @@ classes:
       - primary knowledge source
       - aggregator knowledge source
       - timepoint
-      - original subject
-      - original predicate
-      - original object
     slot_usage:
       type:
         description: rdf:type of biolink:Association should be fixed at rdf:Statement
@@ -8979,8 +8992,6 @@ classes:
   entity to phenotypic feature association mixin:
     mixin: true
     is_a: entity to feature or disease qualifiers mixin
-    mixins:
-      - frequency quantifier
     defining_slots:
       - object
     slot_usage:
@@ -10125,8 +10136,8 @@ enums:
   GeneOrGeneProductOrChemicalEntityAspectEnum:
     permissible_values:
       activity_or_abundance:
-        description: >-
-          Used in cases where the specificity of the relationship can not be determined to be either activity
+        description: >- 
+          Used in cases where the specificity of the relationship can not be determined to be either activity 
           or abundance.  In general, a more specific value from this enumeration should be used.
       abundance:
         is_a: activity_or_abundance
@@ -10220,16 +10231,17 @@ enums:
     permissible_values:
       binding:
         description: >-
-          A causal mechanism mediated by the direct contact between effector and target chemical or
+          A causal mechanism mediated by the direct contact between effector and target chemical or 
           biomolecular entity, which form a stable physical interaction.
       inhibition:
         is_a: binding
         description: >-
-          A causal mechanism in which the effector binds to the target and negatively effects its normal function,
+          A causal mechanism in which the effector binds to the target and negatively effects its normal function, 
           e.g. prevention of enzymatic reaction or activation of downstream pathway.
         close_mappings:
           - DGIdb:inhibitor
           - SEMMEDDB:INHIBITS
+          - SEMMEDDB:inhibits
         narrow_mappings:
           - DGIdb:blocker
           - DGIdb:channel_blocker
@@ -10247,7 +10259,7 @@ enums:
       antagonism:
         is_a: inhibition
         description: >-
-          A causal mechanism in which the effector binds to a receptor and prevents activation by an agonist
+          A causal mechanism in which the effector binds to a receptor and prevents activation by an agonist 
           through competing for the binding site.
         close_mappings:
           - DGIdb:antagonist
@@ -10257,7 +10269,7 @@ enums:
       molecular_channel_blockage:
         is_a: inhibition
         description: >-
-          A causal mechanism in which the effector binds to a molecular channel and prevents or reduces
+          A causal mechanism in which the effector binds to a molecular channel and prevents or reduces 
           transport of ions through it.
       inverse_agonism:
         is_a: inhibition
@@ -10270,7 +10282,7 @@ enums:
       negative_allosteric_modulation:
         is_a: inhibition
         description: >-
-          A causal mechanism in which the effector reduces or prevents the action of the endogenous ligand of a
+          A causal mechanism in which the effector reduces or prevents the action of the endogenous ligand of a 
           receptor by binding to a site distinct from that ligand (i.e. non-competitive inhibition)
         close_mappings:
           - CHEMBL.MECHANISM:negative_allosteric_modulator
@@ -10280,7 +10292,7 @@ enums:
       agonism:
         is_a: activation
         description: >-
-          A causal mechanism in which the effector binds and activates a receptor to mimic the effect of an
+          A causal mechanism in which the effector binds and activates a receptor to mimic the effect of an 
           endogenous ligand.
         close_mappings:
           - CHEMBL.MECHANISM:agonist
@@ -10291,14 +10303,14 @@ enums:
       molecular_channel_opening:
         is_a: activation
         description: >-
-          A causal mechanism in which the effector binds to a molecular channel and facilitates transport of
+          A causal mechanism in which the effector binds to a molecular channel and facilitates transport of 
           ions through it.
         close_mappings:
           - CHEMBL.MECHANISM:opener
       positive_allosteric_modulation:
         is_a: activation
         description: >-
-          A causal mechanism in which the effector enhances the action of the endogenous ligand of a receptor by
+          A causal mechanism in which the effector enhances the action of the endogenous ligand of a receptor by 
           binding to a site distinct from that ligand (i.e. non-competitive inhibition)
         close_mappings:
           - CHEMBL.MECHANISM:positive_allosteric_modulator
@@ -10310,7 +10322,7 @@ enums:
       potentiation:
         is_a: binding
         description: >-
-          A causal mechanism in which the effector  binds to and enhances or intensifies the effect of some
+          A causal mechanism in which the effector  binds to and enhances or intensifies the effect of some 
           other chemical or drug on its target.
         close_mappings:
       activation:
@@ -10323,7 +10335,7 @@ enums:
       inducer:
         is_a: binding
         description: >-
-          A causal mechanism in which the effector binds to and increases the activity/rate of an enzyme that
+          A causal mechanism in which the effector binds to and increases the activity/rate of an enzyme that 
           processes drugs in the body.
         close_mappings:
           - DGIdb:inducer
@@ -10332,7 +10344,7 @@ enums:
           A causal mechanism mediated by through the control of target gene transcription
       signaling_mediated_control:
         description: >-
-          A causal mechanism mediated by the activation or control of signaling events that influence the some aspect
+          A causal mechanism mediated by the activation or control of signaling events that influence the some aspect 
           of the target entity (e.g. its activity, processing, transport, etc)
       stabilization:
         is_a: activation
@@ -10342,7 +10354,7 @@ enums:
         is_a: activation
         close_mappings:
           - DGIdb:stimulator
-          - SEMMEDDB:STIMULATES
+          - SEMMEDDB:stimulates
           - DGIdb:stimulator
       releasing_activity:
         is_a: activation
@@ -10539,38 +10551,38 @@ enums:
     permissible_values:
       "life_threatening_adverse_event":
         description: >-
-          An adverse event or suspected adverse reaction is considered 'life-threatening' if, in the view of either
-          the investigator or sponsor, its occurrence places the patient or subject at immediate risk of death.
-          It does not include an adverse event or suspected adverse reaction that, had it occurred in a more
+          An adverse event or suspected adverse reaction is considered 'life-threatening' if, in the view of either 
+          the investigator or sponsor, its occurrence places the patient or subject at immediate risk of death. 
+          It does not include an adverse event or suspected adverse reaction that, had it occurred in a more 
           severe form, might have caused death.
       "serious_adverse_event":
         description: >-
-          An adverse event or suspected adverse reaction is considered 'serious' if, in the view of either the
+          An adverse event or suspected adverse reaction is considered 'serious' if, in the view of either the 
           investigator or sponsor, it results in any of the following outcomes: Death, a life-threatening adverse event,
-          inpatient hospitalization or prolongation of existing hospitalization, a persistent or significant incapacity
-          or substantial disruption of the ability to conduct normal life functions, or a congenital anomaly/birth
+          inpatient hospitalization or prolongation of existing hospitalization, a persistent or significant incapacity 
+          or substantial disruption of the ability to conduct normal life functions, or a congenital anomaly/birth 
           defect. Important medical events that may not result in death, be life-threatening, or require hospitalization
-          may be considered serious when, based upon appropriate medical judgment, they may jeopardize the patient or
-          subject and may require medical or surgical intervention to prevent one of the outcomes listed in this
-          definition. Examples of such medical events include allergic bronchospasm requiring intensive treatment
-          in an emergency room or at home, blood dyscrasias or convulsions that do not result in inpatient
+          may be considered serious when, based upon appropriate medical judgment, they may jeopardize the patient or 
+          subject and may require medical or surgical intervention to prevent one of the outcomes listed in this 
+          definition. Examples of such medical events include allergic bronchospasm requiring intensive treatment 
+          in an emergency room or at home, blood dyscrasias or convulsions that do not result in inpatient 
           hospitalization, or the development of drug dependency or drug abuse.
       "suspected_adverse_reaction":
          description: >-
-           means any adverse event for which there is a reasonable possibility that the drug caused the adverse event.
-           For the purposes of IND safety reporting, 'reasonable possibility' means there is evidence to suggest a
-           causal relationship between the drug and the adverse event. Suspected adverse reaction implies a lesser
+           means any adverse event for which there is a reasonable possibility that the drug caused the adverse event. 
+           For the purposes of IND safety reporting, 'reasonable possibility' means there is evidence to suggest a 
+           causal relationship between the drug and the adverse event. Suspected adverse reaction implies a lesser 
            degree of certainty about causality than adverse reaction, which means any adverse event caused by a drug.
       "unexpected_adverse_event":
         description: >-
-          An adverse event or suspected adverse reaction is considered 'unexpected' if it is not listed in the
-          investigator brochure or is not listed at the specificity or severity that has been observed; or, if an
-          investigator brochure is not required or available, is not consistent with the risk information described
-          in the general investigational plan or elsewhere in the current application, as amended. For example,
-          under this definition, hepatic necrosis would be unexpected (by virtue of greater severity) if the
-          investigator brochure referred only to elevated hepatic enzymes or hepatitis. Similarly, cerebral
-          thromboembolism and cerebral vasculitis would be unexpected (by virtue of greater specificity) if the
-          investigator brochure listed only cerebral vascular accidents. 'Unexpected', as used in this definition,
+          An adverse event or suspected adverse reaction is considered 'unexpected' if it is not listed in the 
+          investigator brochure or is not listed at the specificity or severity that has been observed; or, if an 
+          investigator brochure is not required or available, is not consistent with the risk information described 
+          in the general investigational plan or elsewhere in the current application, as amended. For example, 
+          under this definition, hepatic necrosis would be unexpected (by virtue of greater severity) if the 
+          investigator brochure referred only to elevated hepatic enzymes or hepatitis. Similarly, cerebral 
+          thromboembolism and cerebral vasculitis would be unexpected (by virtue of greater specificity) if the 
+          investigator brochure listed only cerebral vascular accidents. 'Unexpected,' as used in this definition, 
           also refers to adverse events or suspected adverse reactions that are mentioned in the investigator brochure
-          as occurring with a class of drugs or as anticipated from the pharmacological properties of the drug, but
+          as occurring with a class of drugs or as anticipated from the pharmacological properties of the drug, but 
           are not specifically mentioned as occurring with the particular drug under investigation.
