@@ -19,9 +19,9 @@ export interface BioLinkClassesObject {
 }
 
 export interface BioLinkObject {
-  parent: string;
-  children: string[];
-  description: string;
+  parent?: string;
+  children?: string[];
+  description?: string;
   name: string;
   is_mixin: boolean;
   addChild(child: string): void;
@@ -43,6 +43,7 @@ export interface BioLinkSlotObject extends BioLinkObject {
   exact_mapping: string[];
   close_mapping: string[];
   narrow_mapping: string[];
+  broad_mapping: string[];
 }
 
 export interface BioLinkEntitiesObject {
@@ -58,9 +59,10 @@ export interface BioLinkSlot extends BioLinkBase {
   range?: string;
   inverse?: string;
   symmetric?: boolean;
-  exact_mapping?: string[];
-  close_mapping?: string[];
-  narrow_mapping?: string[];
+  exact_mappings?: string[];
+  close_mappings?: string[];
+  narrow_mappings?: string[];
+  broad_mappings?: string[];
   [propName: string]: any;
 }
 
@@ -71,6 +73,7 @@ export interface BioLinkSlots {
 export interface BioLinkJSON {
   classes: BioLinkClassesObject;
   slots: BioLinkSlots;
+  enums: BioLinkEnums;
   [propName: string]: any;
 }
 
@@ -105,5 +108,47 @@ export interface BioLinkModule {
   loadSync(source: string | undefined): void;
   classTree: BioLinkClassTreeObject;
   slotTree: BioLinkSlotTreeObject;
+  enumTree: BioLinkEnumTreeObject;
   biolinkJSON: BioLinkJSON;
+}
+
+export interface BioLinkEnums {
+  [propName: string]: BioLinkEnum;
+}
+
+export interface BioLinkEnum {
+  permissible_values?: BioLinkQualifiers;
+  [propName: string]: any;
+}
+
+export interface BioLinkQualifier extends BioLinkBase {
+  exact_mappings?: string[];
+  close_mappings?: string[];
+  narrow_mappings?: string[];
+  broad_mappings?: string[];
+  meaning?: string;
+  [propName: string]: any;
+}
+
+export interface BioLinkQualifiers {
+  [propName: string]: BioLinkQualifier;
+}
+
+export interface BioLinkQualifierObject extends BioLinkObject {
+  exact_mapping?: string[];
+  close_mapping?: string[];
+  narrow_mapping?: string[];
+  broad_mapping?: string[];
+  meaning?: string;
+}
+
+export interface BioLinkQualifiersObject {
+  [propName: string]: BioLinkQualifierObject;
+}
+
+export interface BioLinkEnumTreeObject extends BaseTreeObject {
+  objects: BioLinkQualifiersObject;
+  getDescendants(name: string): BioLinkQualifierObject[];
+  getAncestors(name: string): BioLinkQualifierObject[];
+  getPath(downstreamNode: string, upstreamNode: string): BioLinkQualifierObject[];
 }
