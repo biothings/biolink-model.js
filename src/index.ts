@@ -20,8 +20,10 @@ export class BioLink implements BioLinkModule {
     this._biolink_json = await l.load(source);
     this._biolink_class_tree = new BioLinkClassTree(this._biolink_json.classes);
     this._biolink_slot_tree = new BioLinkSlotTree(this._biolink_json.slots);
+    this._biolink_enum_tree = new BioLinkEnumTree(this._biolink_json.enums);
     this._biolink_class_tree.construct();
     this._biolink_slot_tree.construct();
+    this._biolink_enum_tree.construct();
   }
 
   loadSync(source: string = undefined) {
@@ -32,6 +34,7 @@ export class BioLink implements BioLinkModule {
     this._biolink_enum_tree = new BioLinkEnumTree(this._biolink_json.enums);
     this._biolink_class_tree.construct();
     this._biolink_slot_tree.construct();
+    this._biolink_enum_tree.construct();
   }
 
   get classTree() {
