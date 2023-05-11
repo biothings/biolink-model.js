@@ -10111,7 +10111,6 @@ enums:
       snp_form:
         is_a: polymorphic form
       analog_form:
-      modified_form:
 
   GeneOrGeneProductOrChemicalPartQualifierEnum:
     permissible_values:
