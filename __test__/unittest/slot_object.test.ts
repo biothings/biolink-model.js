@@ -63,7 +63,7 @@ describe("Test Slot Object", () => {
 
     describe("Test exact_mapping method", () => {
         test("exact_mapping property is correctly retreived if provided", () => {
-            const s = new Slot("regulates", { exact_mapping: ["GO:regulates"] });
+            const s = new Slot("regulates", { exact_mappings: ["GO:regulates"] });
             expect(s.exact_mapping).toEqual(["GO:regulates"]);
         })
 
@@ -75,7 +75,7 @@ describe("Test Slot Object", () => {
 
     describe("Test close_mapping method", () => {
         test("close_mapping property is correctly retreived if provided", () => {
-            const s = new Slot("regulates", { close_mapping: ["GO:regulated_by", "RO:0002334"] });
+            const s = new Slot("regulates", { close_mappings: ["GO:regulated_by", "RO:0002334"] });
             expect(s.close_mapping).toEqual(["GO:regulated_by", "RO:0002334"]);
         })
 
@@ -87,7 +87,7 @@ describe("Test Slot Object", () => {
 
     describe("Test narrow_mapping method", () => {
         test("narrow_mapping property is correctly retreived if provided", () => {
-            const s = new Slot("regulates", { narrow_mapping: ["WIKIDATA_PROPERTY:P128", "CHEMBL.MECHANISM:modulator"] });
+            const s = new Slot("regulates", { narrow_mappings: ["WIKIDATA_PROPERTY:P128", "CHEMBL.MECHANISM:modulator"] });
             expect(s.narrow_mapping).toEqual(["WIKIDATA_PROPERTY:P128", "CHEMBL.MECHANISM:modulator"]);
         })
 
@@ -99,7 +99,7 @@ describe("Test Slot Object", () => {
 
     describe("Test add_child method", () => {
         test("add child function is correctly performed", () => {
-            const s = new Slot("regulates", { narrow_mapping: ["WIKIDATA_PROPERTY:P128", "CHEMBL.MECHANISM:modulator"] });
+            const s = new Slot("regulates", { narrow_mappings: ["WIKIDATA_PROPERTY:P128", "CHEMBL.MECHANISM:modulator"] });
             s.addChild("negatively regulates")
             expect(s.children).toEqual(["negatively_regulates"]);
         })
