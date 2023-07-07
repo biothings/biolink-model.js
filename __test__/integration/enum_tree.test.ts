@@ -20,15 +20,15 @@ describe("Test BioLink Enum Tree class", () => {
 
         test("Test all objects are corretly loaded", () => {
             tree.construct();
-            expect(tree.objects).toHaveProperty("mutant_form");
-            expect(tree.objects.mutant_form).toBeInstanceOf(QualifierObject);
+            expect(tree.objects).toHaveProperty("genetic_variant_form");
+            expect(tree.objects.genetic_variant_form).toBeInstanceOf(QualifierObject);
             expect(tree.objects).toHaveProperty("reduction");
             expect(tree.objects).toHaveProperty("over_the_counter");
         })
 
         test("Test hierarchical order are correctly parsed", () => {
             tree.construct();
-            expect(tree.objects.genetic_variant_form.children).toContain('mutant_form');
+            expect(tree.objects.genetic_variant_form.children).toContain('polymorphic_form');
             expect(tree.objects.binding.children).toContain('inhibition');
             expect(tree.objects.inhibition.children).not.toContain('binding');
             expect(tree.objects.molecular_modification.children.sort()).toEqual([
@@ -79,8 +79,8 @@ describe("Test BioLink Enum Tree class", () => {
         })
 
         test("Test multi-level inheritency is correctly parsed", () => {
-            expect(tree.getDescendants("activity_or_abundance")).toContain(tree.objects.cleavage);
-            expect(tree.getDescendants("cleavage")).not.toContain(tree.objects.activity_or_abundance);
+            expect(tree.getDescendants("degradation")).toContain(tree.objects.cleavage);
+            expect(tree.getDescendants("cleavage")).not.toContain(tree.objects.degradation);
         })
 
         test("Entity without descendants should return empty array", () => {
@@ -109,7 +109,6 @@ describe("Test BioLink Enum Tree class", () => {
 
         test("Test multi-level inheritency is correctly parsed", () => {
             tree.construct();
-            expect(tree.getAncestors("cleavage")).toContain(tree.objects.activity_or_abundance);
             expect(tree.getAncestors("cleavage")).toContain(tree.objects.degradation);
             expect(tree.getAncestors("cleavage")).not.toContain(tree.objects.folding);
         })
@@ -136,13 +135,14 @@ describe("Test BioLink Enum Tree class", () => {
             tree.construct();
         })
 
-        test("Return all intermediates nodes between upstream and downstream if there're > 1 intermediates", () => {
+        // skipped as there are no existing paths to test this on anymore
+        test.skip("Return all intermediates nodes between upstream and downstream if there're > 1 intermediates", () => {
             const res = tree.getPath("cleavage", "activity_or_abundance").map(item => item.name);
             expect(res).toEqual(["degradation", "abundance"]);
         })
 
         test("Return the intermediate nodes between upstream and downstream if there're only 1 intermediates", () => {
-            const res = tree.getPath("degradation", "activity_or_abundance").map(item => item.name);
+            const res = tree.getPath("synthesis", "activity_or_abundance").map(item => item.name);
             expect(res).toEqual(["abundance"]);
         })
 
