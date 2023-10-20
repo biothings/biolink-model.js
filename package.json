@@ -33,25 +33,25 @@
   "homepage": "https://github.com/biothings/biolink-model.js#readme",
   "devDependencies": {
     "@types/jest": "^26.0.24",
-    "@types/js-yaml": "^4.0.0",
+    "@types/js-yaml": "^4.0.8",
     "@types/node": "^14.18.63",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
-    "coveralls": "^3.1.0",
-    "eslint": "^8.51.0",
+    "coveralls": "^3.1.1",
+    "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
     "rimraf": "^3.0.2",
-    "standard-version": "^9.1.1",
+    "standard-version": "^9.5.0",
     "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "axios": "^0.21.1",
-    "debug": "^4.3.1",
-    "js-yaml": "^4.0.0",
+    "axios": "^0.21.4",
+    "debug": "^4.3.4",
+    "js-yaml": "^4.1.0",
     "pascal-case": "^3.1.2"
   }
 }
