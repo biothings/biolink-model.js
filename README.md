@@ -8,7 +8,7 @@ A nodejs library for manipulating BioLink Model.
 ## 💾 Install
 
 ```bash
-npm i biolink-model
+pnpm i biolink-model
 ```
 
 ## 📐 Usage

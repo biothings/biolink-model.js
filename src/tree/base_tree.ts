@@ -46,7 +46,7 @@ export default abstract class BaseTree implements BaseTreeObject {
             this._objects_in_tree[this._modify(name1)]?.addChild(name);
             // console.log(`object ${name} includes mixin ${name1}!`);
           }
-        })
+        });
       }
     });
   }
