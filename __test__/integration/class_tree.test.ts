@@ -51,14 +51,14 @@ describe("Test BioLink Class Tree class", () => {
                 [
                     tree.objects.SmallMolecule,
                     tree.objects.NucleicAcidEntity,
-                    tree.objects.Exon,
-                    tree.objects.Transcript,
-                    tree.objects.RnaProduct,
-                    tree.objects.RnaProductIsoform,
-                    tree.objects.NoncodingRnaProduct,
-                    tree.objects.MicroRna,
-                    tree.objects.SiRna,
-                    tree.objects.CodingSequence
+                    // tree.objects.Exon,
+                    // tree.objects.Transcript,
+                    // tree.objects.RnaProduct,
+                    // tree.objects.RnaProductIsoform,
+                    // tree.objects.NoncodingRnaProduct,
+                    // tree.objects.MicroRna,
+                    // tree.objects.SiRna,
+                    // tree.objects.CodingSequence
                 ]
             );
             expect(tree.objects.NamedThing).not.toBeUndefined;

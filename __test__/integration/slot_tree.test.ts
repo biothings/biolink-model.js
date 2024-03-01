@@ -37,8 +37,8 @@ describe("Test BioLink Slot Tree class", () => {
               'affects_response_to',
               'regulates',
               'disrupts',
-              'ameliorates',
-              'exacerbates',
+              'ameliorates_condition',
+              'exacerbates_condition',
               'has_adverse_event',
               'has_side_effect',
             ]);
@@ -47,7 +47,7 @@ describe("Test BioLink Slot Tree class", () => {
         test("Test non-explicit inverses are correctly inferred", () => {
             tree.construct();
             expect(tree.objects.treats.inverse).toEqual("treated_by");
-            expect(tree.objects.prevents.inverse).toEqual("prevented_by");
+            expect(tree.objects.preventative_for_condition.inverse).toEqual("condition_prevented_by");
             expect(tree.objects.catalyzes.inverse).toEqual('has_catalyst');
         })
     })
