@@ -6,8 +6,7 @@ license: https://creativecommons.org/publicdomain/zero/1.0/
 
 # Version should be kept in sync with primary Git repository release tag
 
-version: 4.1.6
-
+version: 4.2.2
 
 ## ------------
 ##
@@ -114,7 +113,7 @@ prefixes:
   PANTHER.FAMILY: 'http://www.pantherdb.org/panther/family.do?clsAccession='
   PathWhiz: 'http://smpdb.ca/pathways/#'   #  See also https://smpdb.ca/pathwhiz/
   pav: 'http://purl.org/pav/'
-  PHARMGKB.CHEMICAL: 'https://www.pharmgkb.org/chemical/'
+  PHARMGKB.DRUG: 'https://www.pharmgkb.org/chemical/'
   PHARMGKB.DISEASE: 'https://www.pharmgkb.org/disease/'
   PHARMGKB.GENE: 'https://www.pharmgkb.org/gene/'
   PHARMGKB.PATHWAYS: 'https://www.pharmgkb.org/pathway/'
@@ -212,14 +211,6 @@ types:
     description: A chemical formula
     notes:
       - Should be implemented as a stronger type
-
-  category type:
-    typeof: uriorcurie
-    description: >-
-      A primitive type in which the value denotes a class within the biolink model.
-      The value must be a URI or a CURIE. In a Neo4j representation, the value should
-      be the CURIE for the biolink class, for example biolink:Gene. For an RDF representation,
-      the value should be a URI such as https://w3id.org/biolink/vocab/Gene
 
   iri type:
     typeof: uriorcurie
@@ -501,7 +492,7 @@ slots:
   category:
     is_a: type
     domain: entity
-    range: category type
+    range: uriorcurie
     designates_type: true
     description: >-
       Name of the high level ontology class in which this entity is categorized. Corresponds to the label for the
@@ -665,6 +656,17 @@ slots:
     narrow_mappings:
       - gff3:Dbxref
       - gpi:DB_Xrefs
+
+  url:
+    is_a: node property
+    description: >-
+      This slot holds a string representation of a URL for an external resource about the node it is 
+      present on. Unlike an 'xref' that is primarily represented by a CURIE, this slot is intended to hold a full 
+      URL that can be used to directly access a resource. When linking to an external resource that cannot be 
+      represented by a unique CURIE, this slot should be used.  However, when the intent is to link to the 
+      default URI expansion of a CURIE related to the node it is present on, the xref slot should be used instead.
+    domain: entity
+    range: string
 
   semmed agreement count:
     is_a: association slot
@@ -1182,12 +1184,12 @@ slots:
   is supplement:
     description: >-
     is_a: node property
-    range: chemical mixture
+    domain: chemical mixture
 
   trade name:
     description: >-
     is_a: node property
-    range: chemical entity
+    domain: chemical entity
 
   available from:
     description: >-
@@ -1239,9 +1241,11 @@ slots:
       Should be the highest level of FDA approval this chemical entity or device has, regardless of which
       disease, condition or phenotype it is currently being reviewed to treat.  For specific levels of FDA
       approval for a specific condition, disease, phenotype, etc., see the association slot, 'clinical approval status.'
+    range: ApprovalStatusEnum
 
   drug regulatory status world wide:
     aliases: ['max phase']
+    range: ApprovalStatusEnum
     description: >-
       An agglomeration of drug regulatory status worldwide. Not specific to FDA.
     exact_mappings:
@@ -1652,10 +1656,15 @@ slots:
       - translator_minimal
 
   onset qualifier:
-    deprecated: true
     description: >-
       a qualifier used in a phenotypic association to state
-      when the phenotype appears is in the subject
+      when the phenotype appears is in the subject.
+    notes: >-
+      This  is in Biolink to support HP ontology annotations which use "onset" (with terms from HP) 
+      as an annotation on a disease to phenotypic feature association.  Please only use it for this
+      purpose.  If the intent is to describe the onset of a disease in the context of a treatment, 
+      use object_aspect_qualifier and object_direction_qualifier to capture "delayed onset" or "exacerbated onset"
+      slot.
     is_a: qualifier
     range: onset
     in_subset:
@@ -1724,16 +1733,15 @@ slots:
     annotations:
       canonical_predicate: true
     exact_mappings:
-      - skos:relatedMatch
       - UMLS:related_to
-      - SEMMEDDB:ASSOCIATED_WITH
-      - SEMMEDDB:ADMINISTERED_TO
     broad_mappings:
       - owl:topObjectProperty
     narrow_mappings:
       - SEMMEDDB:compared_with
       - SEMMEDDB:higher_than
       - SEMMEDDB:lower_than
+      - SEMMEDDB:ADMINISTERED_TO
+      - SEMMEDDB:ASSOCIATED_WITH
       - BFO:0000054
       - UBERON_CORE:protects
       - GOREL:0002005
@@ -3474,13 +3482,14 @@ slots:
       stabilize, or cure the condition or delay, prevent, or reduce the risk of it manifesting
       in the first place.
       ‘Treats’ edges should be asserted (knowledge_level: assertion) only in cases where there
-      is strong supporting evidence - i.e. the intervention is approved or in phase 4 trials for
-      the condition, or is an otherwise established treatment in the medical community (e.g. a
-      widely-accepted or formally recommended off-label use). In the absence of such evidence,
-      weaker predicates should be used in asserted edges (e.g. ‘in clinical trials for’ or
-      ‘beneficial in models of’). ‘Treats’ edges based on weaker or indirect forms of evidence
-      can however be created as predictions (knowledge_level: prediction) and should point to
-      the more foundational asserted edges that support them.
+      is strong supporting evidence - i.e. the intervention is approved for the condition, passed
+      phase 3 or in phase 4 trials for the condition, or is an otherwise established 
+      treatment in the medical community (e.g. a widely-accepted or formally recommended 
+      off-label use). In the absence of such evidence, weaker predicates should be used in 
+      asserted edges (e.g. ‘in clinical trials for’ or ‘beneficial in models of’). ‘Treats’ edges
+      based on weaker or indirect forms of evidence can however be created as predictions 
+      (knowledge_level: prediction) and should point to the more foundational asserted edges that 
+      support them.
     domain: chemical or drug or treatment
     range: disease or phenotypic feature
     annotations:
@@ -3525,6 +3534,7 @@ slots:
       - MONDO:disease_responds_to
 
   treated by:
+    is_a: subject of treatment application or study for treatment by
     mixin: true
     domain: disease or phenotypic feature
     range: chemical or drug or treatment
@@ -3673,6 +3683,7 @@ slots:
     range: chemical or drug or treatment
 
   treats or applied or studied to treat:
+    is_a: related to at instance level
     mixin: true
     description: >-
       Holds between an substance, procedure, or activity and a medical condition (disease or phenotypic feature),
@@ -3691,8 +3702,11 @@ slots:
       - translator_minimal
     exact_mappings:
       - SEMMEDDB:TREATS
+    domain: chemical or drug or treatment
+    range: disease or phenotypic feature
 
   subject of treatment application or study for treatment by:
+    is_a: related to at instance level
     mixin: true
     domain: disease or phenotypic feature
     range: chemical or drug or treatment
@@ -3878,6 +3892,7 @@ slots:
       - NCIT:R89
       - DOID-PROPERTY:has_symptom
       - RO:0004022
+      - RO:0004029
 
   phenotype of:
     is_a: related to at instance level
@@ -6071,6 +6086,64 @@ slots:
       type, disease, etc.).
     range: string
 
+  knowledge level:
+    aliases: ['knowledge type']
+    is_a: association slot
+    description: >-
+      Describes the level of knowledge expressed in a statement, based on the
+      reasoning or analysis methods used to generate the statement, or the
+      scope or specificity of what the statement expresses to be true.
+    notes: >-
+      The notion of a 'level' of knowledge can in one sense relate to the strength 
+      of a statement - i.e. how confident we are that it says something true about
+      our domain of discourse. Here, we can generally consider Assertions to be 
+      stronger than Entailments to be stronger than Predictions. 
+      But in another sense, 'level' of knowledge can refer to the scope or specificity of
+      what a statement expresses - on a spectrum from context-specific results of a data
+      analysis, to generalized assertions of knowledge or fact. Here, Statistical 
+      Associations and  Observations represent more foundational statements that are only 
+      slightly removed from the data on which they are based (the former reporting the 
+      direct results of  an analysis in terms of correlations between variables in the data,
+      and the latter describing phenomena that were observed/reported to have occurred).
+    domain: association
+    range: KnowledgeLevelEnum
+    multivalued: false
+    required: true
+    ifabsent: string(not_provided)
+    examples:
+      - value: knowledge_assertion
+      - value: prediction
+      - value: statistical_association
+
+  agent type:
+    is_a: association slot
+    description: >-
+        Describes the high-level category of agent who originally generated a 
+        statement of knowledge or other type of information.
+    notes: >-
+        Note that this property indicates the type of agent who produced a 
+        final statement of knowledge, which is often different from the 
+        agent oragents who produced information used as evidence to 
+        support generation of this knowledge. For example, if a human curator
+        concludes that a particular gene variant causes a medical condition -
+        based on their interpretation of information produced by computational 
+        modeling tools, automated data analysis pipelines, and robotic laboratory
+        assay systems - the agent_type for this statement is 'manual agent' - 
+        despite all of the evidence being created by automated agents. But if any
+        of these systems is programmed to generate knowledge statements 
+        directly and without human assistance, the statement would be attributed 
+        to an 'automated_agent'.
+    domain: association
+    range: AgentTypeEnum
+    multivalued: false
+    required: true
+    ifabsent: string(not_provided)
+    examples:
+      - value: manual_agent
+      - value: automated_agent
+      - value: computational_model
+      - value: text_mining_agent
+
 classes:
 
   mapping collection:
@@ -6309,7 +6382,6 @@ classes:
     slot_usage:
       category:
         required: true
-        pattern: '^biolink:[A-Z][A-Za-z]+$'
     exact_mappings:
       - BFO:0000001
       - WIKIDATA:Q35120
@@ -6984,8 +7056,6 @@ classes:
       - STY:T075
       # Drug Delivery Device
       - STY:T203
-      # Biomedical or Dental Material
-      - STY:T122
 
   diagnostic aid:
     is_a: named thing
@@ -7124,10 +7194,10 @@ classes:
     in_subset:
       - translator_minimal
     id_prefixes:
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
       - DRUGBANK
       - MESH
       - CAS
@@ -7135,16 +7205,17 @@ classes:
       - GTOPDB
       - HMDB
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
       - SIDER.DRUG
       - INCHI
       - INCHIKEY
-       # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-       # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.DRUG     # D number
-      - KEGG.ENVIRON  # E number
+      - BIGG.METABOLITE
+      - foodb.compound
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
       - KEGG
       - UMLS
 
@@ -7173,33 +7244,35 @@ classes:
       - STY:T167  # Substance, children include food, body substance, chemical.
     narrow_mappings:
       - WIKIDATA:Q43460564
+      - STY:T123  # (bacs, full name: Biologically Active Substance)
+      - STY:T131  # (hops, full name: Hazardous or Poisonous Substance)
     in_subset:
       - translator_minimal
     id_prefixes:
-      - UNII
       - CHEBI
-      - MESH
-      - CAS  # CAS numbers are given for things like plant extracts as well.
-      - UMLS
-      - ncats.drug
-      - PHARMGKB.CHEMICAL
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
+      - DRUGBANK
+      - MESH
+      - CAS
       - DrugCentral
       - GTOPDB
       - HMDB
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
       - SIDER.DRUG
       - INCHI
       - INCHIKEY
-      # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-      # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.DRUG     # D number
-      - KEGG.ENVIRON  # E number
+      - BIGG.METABOLITE
+      - foodb.compound
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
       - KEGG
+      - UMLS
 
   small molecule:
     is_a: molecular entity
@@ -7214,8 +7287,6 @@ classes:
       - STY:T196  # Element, Ion, or Isotope
       - CHEBI:59999
       - bioschemas:ChemicalSubstance
-      - STY:T123  # (bacs, full name: Biologically Active Substance)
-      - STY:T131  # (hops, full name: Hazardous or Poisonous Substance)
       - STY:T125  # (horm, full name: Hormone)
       - STY:T197  # (inch, full name: Inorganic Chemical)
       - STY:T109  # (orch, full name: Organic Chemical)
@@ -7228,9 +7299,9 @@ classes:
       - STY:T127  # vitamin
     id_prefixes:
       - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
       - DRUGBANK
       - MESH
       - CAS
@@ -7238,26 +7309,19 @@ classes:
       - GTOPDB
       - HMDB
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
       - SIDER.DRUG
       - INCHI
       - INCHIKEY
-       # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-       # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
       - BIGG.METABOLITE
-      - UMLS
       - foodb.compound
-      - KEGG.GLYCAN   # G number
-      - KEGG.DRUG     # D number
-      - KEGG.ENVIRON  # E number
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
       - KEGG
       - UMLS
-    slot_usage:
-      id:
-        examples:
-          - value: CHEBI:29101
-            description: sodium ion
     in_subset:
       - model_organism_database
       - translator_minimal
@@ -7276,10 +7340,10 @@ classes:
     in_subset:
       - translator_minimal
     id_prefixes:
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
       - DRUGBANK
       - MESH
       - CAS
@@ -7287,17 +7351,18 @@ classes:
       - GTOPDB
       - HMDB
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
       - SIDER.DRUG
       - INCHI
       - INCHIKEY
-       # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-       # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   ## G number
-      - KEGG.DRUG     ## D number
+      - BIGG.METABOLITE
+      - foodb.compound
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
       - KEGG
-      - KEGG.ENVIRON  ## E number
       - UMLS
     close_mappings:
       - dcid:ChemicalCompound
@@ -7403,10 +7468,10 @@ classes:
     in_subset:
       - translator_minimal
     id_prefixes:
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
       - DRUGBANK
       - MESH
       - CAS
@@ -7414,19 +7479,19 @@ classes:
       - GTOPDB
       - HMDB
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
       - SIDER.DRUG
       - INCHI
       - INCHIKEY
-       # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-       # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   ## G number
-      - KEGG.DRUG     ## D number
+      - BIGG.METABOLITE
+      - foodb.compound
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
       - KEGG
-      - KEGG.ENVIRON  ## E number
       - UMLS
-      - ncats.drug
 
   complex molecular mixture:
     is_a: chemical mixture
@@ -7613,31 +7678,31 @@ classes:
     exact_mappings:
       - OBI:0000047
     id_prefixes:
-      - UMLS
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
+      - DRUGBANK
       - MESH
       - CAS
+      - DrugCentral
       - GTOPDB
       - HMDB
-      - KEGG
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
+      - SIDER.DRUG
       - INCHI
       - INCHIKEY
-      # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-      # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.ENVIRON  # E number
-      - ChemBank
-      - SIDER.DRUG
       - BIGG.METABOLITE
       - foodb.compound
-      - UMLS
       - foodb.food
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
+      - KEGG
+      - UMLS
 
   drug:
     is_a: molecular mixture
@@ -7667,28 +7732,29 @@ classes:
       - RXCUI
       - NDC
       - UMLS
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
+      - DRUGBANK
       - MESH
       - CAS
+      - DrugCentral
       - GTOPDB
       - HMDB
-      - KEGG
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
+      - SIDER.DRUG
       - INCHI
       - INCHIKEY
-      # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-      # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.ENVIRON  # E number
-      - ChemBank
-      - SIDER.DRUG
       - BIGG.METABOLITE
       - foodb.compound
+      - KEGG.GLYCAN
+      - KEGG.ENVIRON
+      - KEGG.ENVIRON
+      - KEGG
 
    ## Food
 
@@ -7698,32 +7764,31 @@ classes:
        # substance role
       - CHEBI:78299
     id_prefixes:
-      - ncats.drug
-      - RXCUI
-      - NDC
-      - UMLS
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
+      - DRUGBANK
       - MESH
       - CAS
+      - DrugCentral
       - GTOPDB
       - HMDB
-      - KEGG
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
+      - SIDER.DRUG
       - INCHI
       - INCHIKEY
-      # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-      # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.ENVIRON  # E number
-      - ChemBank
-      - SIDER.DRUG
       - BIGG.METABOLITE
       - foodb.compound
+      - foodb.food
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
+      - KEGG
+      - UMLS
 
   food additive:
     is_a: chemical entity
@@ -7731,32 +7796,31 @@ classes:
        # substance role
       - CHEBI:64047
     id_prefixes:
-      - ncats.drug
-      - RXCUI
-      - NDC
-      - UMLS
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
+      - DRUGBANK
       - MESH
       - CAS
+      - DrugCentral
       - GTOPDB
       - HMDB
-      - KEGG
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
+      - SIDER.DRUG
       - INCHI
       - INCHIKEY
-      # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-      # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.ENVIRON  # E number
-      - ChemBank
-      - SIDER.DRUG
       - BIGG.METABOLITE
       - foodb.compound
+      - foodb.food
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
+      - KEGG
+      - UMLS
 
   food:
     is_a: chemical mixture
@@ -7766,32 +7830,29 @@ classes:
       - foodb.food
       - foodb.compound
       - FOODON
-      - UMLS
-      - NCIT
+      - CHEBI
+      - UNII
       - PUBCHEM.COMPOUND
       - CHEMBL.COMPOUND
-      - UNII
-      - CHEBI
+      - DRUGBANK
       - MESH
       - CAS
+      - DrugCentral
       - GTOPDB
       - HMDB
-      - KEGG
       - KEGG.COMPOUND
+      - PHARMGKB.DRUG
       - ChemBank
       - PUBCHEM.SUBSTANCE
+      - SIDER.DRUG
       - INCHI
       - INCHIKEY
-      # - iupac  # is not actually a CURIE namespace but only a naming convention for chemistry
-      # - SMILES   # is not actually a CURIE namespace but only a query language for chemistry
-      - KEGG.GLYCAN   # G number
-      - KEGG.ENVIRON  # E number
-      - ChemBank
-      - SIDER.DRUG
       - BIGG.METABOLITE
-    exact_mappings:
-       # Food
-      - STY:T168
+      - KEGG.GLYCAN
+      - KEGG.DRUG
+      - KEGG.ENVIRON
+      - KEGG
+      - UMLS
 
    ## Biology and Biomedical Sciences
 
@@ -8876,10 +8937,13 @@ classes:
       - HP:0031797
 
   onset:
-    deprecated: true
     is_a: clinical course
     description: >-
-      The age group in which (disease) symptom manifestations appear
+      The age group in which (disease) symptom manifestations appear.
+    notes: >-
+      This class is in Biolink to support HP ontology annotations which use "onset" (with terms from HP) 
+      as an annotation on a disease to phenotypic feature association.  This should be the primary use
+      case for this class.
     exact_mappings:
       - HP:0003674
 
@@ -9263,6 +9327,8 @@ classes:
       - knowledge source
       - primary knowledge source
       - aggregator knowledge source
+      - knowledge level
+      - agent type
       - timepoint
       - original subject
       - original predicate
@@ -9279,11 +9345,13 @@ classes:
       - subject label closure
       - object label closure
       - retrieval source ids
+      - p value
+      - adjusted p value
     slot_usage:
       type:
         description: rdf:type of biolink:Association should be fixed at rdf:Statement
       category:
-        range: category type
+        range: uriorcurie
         required: false
     exact_mappings:
       - OBAN:association
@@ -10223,6 +10291,20 @@ classes:
     slots:
       - sex qualifier
 
+  phenotypic feature to phenotypic feature association:
+    description: >-
+      Association between two concept nodes of phenotypic character,
+      qualified by the predicate used. This association may typically
+      be used to specify 'similar_to' or 'member_of' relationships.
+    is_a: association
+    mixins:
+      - phenotypic feature to entity association mixin
+      - entity to phenotypic feature association mixin
+    defining_slots:
+      - subject
+      - predicate
+      - object
+
   information content entity to named thing association:
     description: >-
       association between a named thing and a information content entity where the specific context
@@ -10380,6 +10462,8 @@ classes:
 
   disease to phenotypic feature association:
     is_a: association
+    slots:
+      - onset qualifier
     defining_slots:
       - subject
       - object
@@ -11404,6 +11488,97 @@ classes:
 
 enums:
 
+  ApprovalStatusEnum:
+    description: >-
+    permissible_values:
+      "discovery_and_development_phase":
+        description: >-
+          Discovery & Development Phase. Discovery involves researchers finding new possibilities
+          for medication through testing molecular compounds, noting unexpected effects from existing treatments,
+          or the creation of new technology that allows novel ways of targeting medical products to sites in the body.
+          Drug development occurs after researchers identify potential compounds for experiments.
+      "preclinical_research_phase":
+        description: >-
+          Preclinical Research Phase.  Once researchers have examined the possibilities a new drug may contain,
+          they must do preliminary research to determine its potential for harm (toxicity).
+          This is categorized as preclinical research and can be one of two types: in vitro or in vivo.
+      "fda_clinical_research_phase":
+        description: >-
+          Clinical Research Phase. Clinical research involves trials of the drug on people,
+          and it is one of the most involved stages in the drug development and approval process.
+          Clinical trials must answer specific questions and follow a protocol determined by
+          the drug researcher or manufacturer.
+      "fda_review_phase_4":
+        description: >-
+          FDA Review
+      "fda_post_market_safety_review":
+        description: >-
+          FDA Post-Market Safety Monitoring.  The last phase of drug approval is an ongoing one
+          while the drug is on the marketplace. If a developer wants to change anything about the
+          drug formulation or approve it for a new use, they must apply with the FDA. The FDA also
+          frequently reviews the drug’s advertising and its manufacturing facility to make sure
+          everything involved in its creation and marketing is in compliance with regulations.
+      "fda_clinical_research_phase_1":
+        description: >-
+          In the FDA Clinical Research Phase, the Clinical Research Phase 1 involves 20 – 100 study participants and
+          lasts several months. This phase is used to determine the safety and dosage of the drug,
+          and about 70% of these drugs move on to the next clinical research phase.
+      "fda_clinical_research_phase_2":
+        description: >-
+          In the FDA Clinical Research Phase, the Clinical Research Phase 2 involves up to several hundred people,
+          who must have the disease or condition the drug supposes to treat. This phase can last
+          from a few months to two years, and its purpose is to monitor the efficacy of the drug,
+          as well as note side effects that may occur.
+      "fda_clinical_research_phase_3":
+        description: >-
+          In the FDA Clinical Research Phase, the Clinical Research Phase 3 involves 300 – 3000 volunteers
+          and can last up to four years. It is used to continue monitoring the efficacy of
+          the drug, as well as exploring any longer-term adverse reactions.
+      "fda_clinical_research_phase_4":
+        description: >-
+          In the FDA Clinical Research Phase, the Clinical Research Phase 4 involves several thousands of
+          volunteers who have the disease or condition and continues to monitor safety and efficacy.
+          If a drug passes this phase, it goes on to FDA review.
+      "fda_fast_track":
+        description: >-
+          Fast track is a process designed to facilitate the development, and expedite the
+          review of drugs to treat serious conditions and fill an unmet medical need.
+          The purpose is to get important new drugs to the patient earlier. Fast Track
+          addresses a broad range of serious conditions. For more information https://www.fda.gov/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/fast-track
+      "fda_breakthrough_therapy":
+        description: >-
+          Breakthrough Therapy designation is a process designed to expedite the
+          development and review of drugs that are intended to treat a serious
+          condition and preliminary clinical evidence indicates that the drug may
+          demonstrate substantial improvement over available therapy on a clinically significant endpoint(s).
+          For more information https://www.fda.gov/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/breakthrough-therapy
+      "fda_accelerated_approval":
+        description: >-
+          When studying a new drug, it can sometimes take many years to learn whether a drug actually
+          provides a real effect on how a patient survives, feels, or functions. A positive therapeutic
+          effect that is clinically meaningful in the context of a given disease is known as “clinical benefit”.
+          Mindful of the fact that it may take an extended period of time to measure a drug’s intended clinical
+          benefit, in 1992 FDA instituted the Accelerated Approval regulations. These regulations allowed drugs
+          for serious conditions that filled an unmet medical need to be approved based on a surrogate endpoint.
+          Using a surrogate endpoint enabled the FDA to approve these drugs faster.
+          For more information https://www.fda.gov/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/accelerated-approval
+      "fda_priority_review":
+        description: >-
+          Prior to approval, each drug marketed in the United States must go through a detailed FDA review process.
+          In 1992, under the Prescription Drug User Act (PDUFA), FDA agreed to specific goals for improving
+          the drug review time and created a two-tiered system of review times – Standard Review and Priority
+          Review. A Priority Review designation means FDA’s goal is to take action on an application
+          within 6 months (compared to 10 months under standard review).
+          For more information https://www.fda.gov/patients/fast-track-breakthrough-therapy-accelerated-approval-priority-review/priority-review
+      "regular_fda_approval":
+        description: >-
+          Regular FDA Approval.  The last phase of drug approval is an ongoing one while the drug is on the marketplace.
+          If a developer wants to change anything about the drug formulation or approve it for a new use,
+          they must apply with the FDA. The FDA also frequently reviews the drug’s advertising and its
+          manufacturing facility to make sure everything involved in its creation and marketing is in compliance
+          with regulations.
+      "post_approval_withdrawal":
+
   ClinicalApprovalStatusEnum:
     description:
     permissible_values:
@@ -11543,6 +11718,10 @@ enums:
       folding:
       localization:
       transport:
+      absorption:
+      aggregation:
+      interaction:
+      release:
       secretion:
         is_a: transport
       uptake:
@@ -11895,3 +12074,178 @@ enums:
           also refers to adverse events or suspected adverse reactions that are mentioned in the investigator brochure
           as occurring with a class of drugs or as anticipated from the pharmacological properties of the drug, but
           are not specifically mentioned as occurring with the particular drug under investigation.
+    in_subset:
+      - translator_minimal
+
+  AgentTypeEnum:
+    permissible_values:
+      manual_agent:
+        description: >-
+          A human agent who is responsible for generating a statement of
+          knowledge. The human may utilize computationally generated
+          information as evidence for the resulting knowledge, 
+          but the human is the one who ultimately interprets/reasons with 
+          this evidence to produce a statement of knowledge.
+      automated_agent:
+        description: >-
+          An automated agent, typically a software program or tool, that is 
+          responsible for generating a statement of knowledge. Human contribution 
+          to the knowledge creation process ends with the definition and coding
+          of algorithms or analysis pipelines that get executed by the automated
+          agent.
+      data_analysis_pipeline:
+        is_a: automated_agent
+        description: >-
+          An automated agent that executes an analysis workflow over data and 
+          reports the direct results of the analysis. These typically report 
+          statistical associations/correlations between variables in the input
+          dataset, and do not interpret/infer broader conclusions from associations
+          the analysis reveals in the data.
+        notes: >-
+          If an analysis pipeline includes any rules for generating broader 
+          conclusions based on the dataset-specific statistical correlations
+          it calculates (e.g. create a 'treats' edge when the analysis reveals a 
+          drug-disease correlation in the data with statistical scores that meet a 
+          certain threshold) - we would consider this agent to be a Computational Model
+          rather than just a Data Analysis Pipeline.
+      computational_model:
+        is_a: automated_agent
+        description: >-
+          An automated agent that generates knowledge statements (typically
+          predictions) based on rules/logic explicitly encoded in an algorithm
+          (e.g. heuristic models, supervised classifiers), or learned from patterns 
+          observed in data (e.g. ML models, unsupervised classifiers).
+        notes: >-
+          The bar is quite low relatively for what is considered to be a 
+          ‘computational model’ by our definition. Even agents/tools that apply 
+          simple rules or logic to the output of an ingest or analysis pipeline
+          to allow for a stronger or more general conclusion to be stated can 
+          qualify an agent as a model. For example, an ingest pipeline that applies rules to its ingest of 
+          clinical trials data to create a 'treats' prediction edge when the 
+          source reports a drug to be in phase 2 or 3 trials represents a
+          computational model because it is automatically drawing a stronger
+          conclusion than the source reports, based on logic encoded in the ingest
+          pipeline. Similarly, a data analysis pipeline that is extended with rules to 
+          automatically generate broader conclusions based on dataset-specific
+          statistical correlations (e.g. create a 'treats' edge when the analysis
+          reveals a drug-disease correlation in the data with statistical scores 
+          that meet a certain threshold), would also qualify as a computational 
+          model by our definition.
+      text_mining_agent:
+        is_a: automated_agent
+        description: >-
+          An automated agent that uses Natural Language Processing to recognize
+          concepts and/or relationships in text, and report them using formally
+          encoded semantics (e.g. as an edge in a knowledge graph).
+        notes: >-
+          The original statement in the source text is typically made by a human / 
+          manual agent, but if a specific encoding of this knowledge is produced
+          by a text-mining tool, it has an agent_type of 'text_mining_agent'.
+          Examples of text mining agents include SemmedDB, and the Translator
+          Text-Mining Knowledge Provider. Note that text-mining tools are prone to erroneous interpretation of 
+          concepts and relationships, and can fail to provide important details 
+          about the context in which the original knowledge was reported - so
+          users should always consult the source text for a text-mined statement
+          to assess its veracity and relevance.
+      image_processing_agent:
+        is_a: automated_agent
+        description: >-
+          An automated agent that processes images to generate textual statements of 
+          knowledge derived from the image and/or expressed in text the image 
+          depicts (e.g. via OCR).
+      manual_validation_of_automated_agent:
+        description: >-
+          A human agent reviews and validates/approves the veracity of knowledge 
+          that is initially generated by an automated agent.
+        notes: >-
+          This term applies when a human was only involved in evaluating the veracity
+          of a knowledge statement that was generated by an automated agent. It is 
+          important to indicate when such manual review has occurred, because it can
+          give a user more confidence in an automated statement.
+      not_provided:
+        description: >-
+          The agent type is not provided, typically because it cannot be determined
+          from available information if the agent that generated the knowledge is 
+          manual or automated.
+    in_subset:
+      - translator_minimal
+
+  KnowledgeLevelEnum:
+    permissible_values:
+      knowledge_assertion:
+        aliases: ['assertion']
+        description: >-
+          A statement of purported fact that is put forth by an agent as true,
+          based on assessment of direct evidence. Assertions are likely but not 
+          definitively true.
+        notes: >-
+          Knowledge Assertions are supported by direct evidence deemed sufficient
+          by some agent to support a confidence assertion of truth. Our certainty 
+          in this truth is not absolute, but is typically higher than for Predictions.
+      logical_entailment:
+        aliases: ['deductive_inference']
+        description: >-
+          A statement reporting a conclusion that follows logically from premises
+          representing established facts or knowledge assertions (e.g. fingernail
+          part of finger, finger part of hand --> fingernail part of hand).
+        notes: >-
+          These statements report entailed conclusions derived through dedictive inference.
+          They are not directly asserted by a source, but logically follow from statement(s) 
+          a source does make - and are necessarily true if their supporting premises are true. 
+          In practice, these will primarily be entailments based on logic encoded in ontologies. 
+          Examples include propagation of annotated knowledge to hierarchically-related concepts,
+          across paths through a graph constructed from transitive relationships, or sets of 
+          relationships that support property chain inference.
+      prediction:
+        aliases: ['hypothesis']
+        description: >-
+          A statement of a possible fact based on probabilistic forms of reasoning over
+          more indirect forms of evidence, that lead to more speculative conclusions.
+        notes: >-
+          Predictions typically result from non-deductive forms of reasoning - e.g.
+          inductive and deductive inference, or statistical inference where conclusions
+          are drawn about a broader/global population based on data from a representative
+          cohort. For example, a prediction that a drug may treat a particular disease based on its chemical
+          similarity to known drugs that treat the disease, and the fact that it can inhibit proteins 
+          in a pathway that is associated with the disease
+          As Predictions are based on weaker forms of inference and evidence, they are typically 
+          considered lower confidence statements as compared to Knowledge Assertions and Logical
+          Entailments.
+      statistical_association:
+        description: >-
+          A statement that reports concepts representing variables in a dataset to be statistically
+          associated with each other in a particular cohort (e.g. 'Metformin Treatment (variable 1)
+          is correlated with Diabetes Diagnosis (variable 2) in EHR dataset X').
+        notes: >-
+          Such statements report the direct results of some statistical analysis. Their scope is limited
+          tp the cohort/dataset interrogated in the analysis, and they do not make broader claims or draw 
+          more meaningful conclusions about the domain of discourse. Note however that such Statistical 
+          Associations can be used as evidence to support a more pointed/precise Prediction or Assertion 
+          of knowledge. For example, e.g. a Statistical Association between 'Metformin Prescription' and
+          'Diabetes Diagnosis' in EHR records could support a Prediction that 'Metformin treats Diabetes', 
+          or 'Metformin causes Diabetes'. This 'treats' edge may have a knowledge_level of 'Prediction', 
+          but the provider could use the 'evidence_type' edge property to indicate that this prediction is 
+          based on a 'Statistical Association'. Because Statistical Associations directly report analysis-specific 
+          results, we can consider them to be inherently true statements, whose broader utility is dependent on 
+          subsequent generalization of the reported result to a broader population, and/or interpretation of the 
+          result as support for a more meaningful statements about the domain of discourse.
+      observation:
+        description: >-
+          A statement reporting (and possibly quantifying) a phenomenon that was observed to occur - 
+          absent any analysis or interpretation that generates a statistical association or supports
+          a broader conclusion or inference.
+        notes: >-
+          An observation that "56362 people self-reported taking melatonin to treat migraines"
+          is agnostic to whether melatonin is an effective or approved treatment - it only claims that it was
+          taken for this purpose. Such observations, however, may be used as the basis for predicting that a 
+          drug may be efficacious against a disease.
+      not_provided:
+        description: >-
+          The knowledge level is not provided, typically because it cannot be determined from available.
+          information.
+        notes: >-
+          This term is most often applied for text-mined edges, as NLP tools are typically not able to detect
+          a specific knowledge level for the concept relationships they extract (e.g. whether the author 
+          was predicting or asserting a relationship, or merely observed it to occur).
+    in_subset:
+      - translator_minimal
